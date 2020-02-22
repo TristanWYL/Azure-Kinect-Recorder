@@ -338,3 +338,9 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+*.mkv
+
+# ignored folders
+CameraCaptureUIExample/
+ConsoleApplication2/
+ImageRecorder/

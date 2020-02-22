@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="soundio\endian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="soundio\soundio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem17.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpudepthtopointcloudconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ik4adockcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ik4aimageconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ik4aobserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ik4avisualizationwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aaudiochanneldatagraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aaudiomanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aaudiowindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4acolorimageconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aconvertingimagesource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adatasource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adepthimageconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adepthimageconverterbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adepthpixelcolorizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adevicecorrelator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4adevicedockcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4afilepicker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aframeratetracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimageextractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimgui_all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimguiextensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimugraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimugraphdatagenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aimuwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4ainfraredimageconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4alogdockcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4amicrophone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4amicrophonelistener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4anonbufferingcapturesource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apixel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apointcloudrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apointcloudshaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apointcloudviewcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apointcloudvisualizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apointcloudwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4apollingthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4arecordingdockcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aringbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4asoundio_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4asourceselectiondockcontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4astaticimageproperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4atypeoperators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4avideowindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewererrormanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewerimage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewerlogmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewersettingsmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4aviewerutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4awindowdock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4awindowmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4awindowset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="k4awindowsizehelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openglhelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="perfcounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
