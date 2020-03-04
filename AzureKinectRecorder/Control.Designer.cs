@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Control));
             this.btnPreview = new System.Windows.Forms.Button();
             this.btnRecord = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +44,7 @@
             // 
             this.btnPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnPreview.Location = new System.Drawing.Point(32, 160);
-            this.btnPreview.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPreview.Margin = new System.Windows.Forms.Padding(2);
             this.btnPreview.Name = "btnPreview";
             this.btnPreview.Size = new System.Drawing.Size(261, 48);
             this.btnPreview.TabIndex = 0;
@@ -56,7 +57,7 @@
             this.btnRecord.Enabled = false;
             this.btnRecord.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRecord.Location = new System.Drawing.Point(32, 229);
-            this.btnRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRecord.Margin = new System.Windows.Forms.Padding(2);
             this.btnRecord.Name = "btnRecord";
             this.btnRecord.Size = new System.Drawing.Size(261, 48);
             this.btnRecord.TabIndex = 0;
@@ -92,7 +93,7 @@
             this.cboxMircophone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cboxMircophone.FormattingEnabled = true;
             this.cboxMircophone.Location = new System.Drawing.Point(23, 88);
-            this.cboxMircophone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboxMircophone.Margin = new System.Windows.Forms.Padding(2);
             this.cboxMircophone.Name = "cboxMircophone";
             this.cboxMircophone.Size = new System.Drawing.Size(280, 24);
             this.cboxMircophone.TabIndex = 1;
@@ -117,7 +118,7 @@
             this.cboxCamera.FormattingEnabled = true;
             this.cboxCamera.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.cboxCamera.Location = new System.Drawing.Point(23, 38);
-            this.cboxCamera.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboxCamera.Margin = new System.Windows.Forms.Padding(2);
             this.cboxCamera.Name = "cboxCamera";
             this.cboxCamera.Size = new System.Drawing.Size(280, 24);
             this.cboxCamera.TabIndex = 1;
@@ -141,11 +142,12 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Control";
-            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Control Center";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Control_FormClosing);
             this.Load += new System.EventHandler(this.Control_Load);
