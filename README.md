@@ -23,6 +23,9 @@ Set the directory where to store the recorded file. Currently the records are st
 ## Prerequisite
 Install the Kinect sensor SDK first in which there is the driver for running the hardware. Follow this [webpage](https://docs.microsoft.com/en-us/azure/kinect-dk/set-up-azure-kinect-dk).
 
+## Installation
+A setup project is available for easy access to this recorder project.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
