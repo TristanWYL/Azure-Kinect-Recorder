@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using K4AdotNet.Sensor;
 using NAudio.CoreAudioApi;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AzureKinectRecorder
 {
@@ -18,7 +20,8 @@ namespace AzureKinectRecorder
         bool isCboxCameraSelected = false;
         bool isCboxMicrophoneSelected = false;
         DateTime dtStartRecordingTime;
-
+        JArray jsonTestSite;
+        String siteID = "";
         public Control()
         {
             InitializeComponent();
@@ -26,6 +29,14 @@ namespace AzureKinectRecorder
 
         private void Control_Load(object sender, EventArgs e)
         {
+            LoadJson();
+            foreach (var site in jsonTestSite) {
+                cboxSite.Items.Add(site);
+            }
+            cboxSite.ValueMember = "id";
+            cboxSite.DisplayMember = "desc";
+
+
             int number = Device.InstalledCount;
             // initialize cboxCamera
             for(int ind = 0; ind<number; ind++) { cboxCamera.Items.Add($"Azure Kinect {ind+1}"); }
@@ -39,6 +50,19 @@ namespace AzureKinectRecorder
             }
 
             timer1.Enabled = true;
+        }
+
+        private void LoadJson() {
+            //using (StreamReader file = File.OpenText(@"site.json")) {
+            //    using (JsonTextReader reader = new JsonTextReader(file))
+            //    {
+            //        jsonTestSite = (JObject)JToken.ReadFrom(reader);
+            //    }
+            //}
+            using (StreamReader sr = File.OpenText(@"site.json"))
+            {
+                jsonTestSite = (JArray)JsonConvert.DeserializeObject(sr.ReadToEnd());
+            }
         }
 
         private void LoadWasapiDevicesCombo()
@@ -68,8 +92,37 @@ namespace AzureKinectRecorder
             }
         }
 
+        private void cboxSite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            siteID = ((JObject)cboxSite.SelectedItem).ToObject<Dictionary<dynamic, dynamic>>()["id"];
+        }
+
         private void btnPreview_Click(object sender, EventArgs e)
         {
+            if ((!rbtnClose.Checked) && (!rbtnFar.Checked)) {
+                MessageBox.Show("Please specify the field type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Field field = Field.Close;
+
+            if (rbtnClose.Checked) {
+                if (Globals.getInstance().dictIsFieldOpen[Field.Close]) {
+                    MessageBox.Show("The \"Close\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                field = Field.Close;
+            }
+            if (rbtnFar.Checked)
+            {
+                if (Globals.getInstance().dictIsFieldOpen[Field.Far])
+                {
+                    MessageBox.Show("The \"Far\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                field = Field.Far;
+            }
+
             // Device device = Device.Open(cboxCamera.SelectedIndex);
             bool isCameraOpen = Device.TryOpen(out var camera, cboxCamera.SelectedIndex);
             if (!isCameraOpen) {
@@ -78,15 +131,16 @@ namespace AzureKinectRecorder
             }
             MMDevice mic = (MMDevice)cboxMircophone.SelectedItem;
 
-            Viewer viewer = new Viewer(camera, mic, (String)cboxCamera.SelectedItem);
+            Viewer viewer = new Viewer(camera, mic, field);
             viewer.Show();
 
             //TODO: if succeed:
-            IntegratedRecorder recorder = new IntegratedRecorder(camera, viewer.cameraConfig, $"Kinect{cboxCamera.SelectedIndex+1}", mic);
+            IntegratedRecorder recorder = new IntegratedRecorder(camera, viewer.cameraConfig, field, mic);
 
             // link the viewer with the recorder 
             viewer.OnNewCapture += new NewCaptureEventHandler(recorder.NewCaptureArrive);
             Globals.getInstance().viewerRecorderPairs[viewer] = recorder;
+            Globals.getInstance().dictIsFieldOpen[field] = true;
         }
 
         private void cboxMircophone_SelectedIndexChanged(object sender, EventArgs e)
@@ -106,6 +160,10 @@ namespace AzureKinectRecorder
         {
             if (!Globals.getInstance().isRecording)
             {
+                if (siteID.Length < 1) {
+                    MessageBox.Show("Please specify the testing site before recording.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 // prepare the file-saving directory
                 String folderName = DateTime.Now.ToString("yyyyMMddHHmmss");
                 String fullDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Kinect",folderName);
@@ -121,7 +179,7 @@ namespace AzureKinectRecorder
 
                 // initialize the recorder
                 foreach (var viewerRecorderPair in Globals.getInstance().viewerRecorderPairs) {
-                    viewerRecorderPair.Value.InitializeRecorder(fullDirectory);
+                    viewerRecorderPair.Value.InitializeRecorder(fullDirectory, siteID);
                     viewerRecorderPair.Value.StartRecord();
                 }
 

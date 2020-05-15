@@ -19,9 +19,10 @@ namespace AzureKinectRecorder
         MMDevice microphone;
         String recordDirectory;
         /// <summary>
-        /// This will be used as part of the file name
+        /// This will be used to format part of the file name
         /// </summary>
-        String deviceLabel;
+        private Field field;
+
         String imageFullFileName;
         String audioFullFillName;
 
@@ -36,12 +37,11 @@ namespace AzureKinectRecorder
         /// <param name="cameraConfig"></param>
         /// <param name="deviceLabel">This will be incoporated into the file name recorded</param>
         /// <param name="mic"></param>
-        public IntegratedRecorder(Device camera, DeviceConfiguration cameraConfig, String deviceLabel, MMDevice mic) {
+        public IntegratedRecorder(Device camera, DeviceConfiguration cameraConfig, Field field, MMDevice mic) {
             this.camera = camera;
             this.cameraConfig = cameraConfig;
             this.microphone = mic;
-            this.deviceLabel = deviceLabel;
-
+            this.field = field;
             if (audioCaptureDevice == null)
             {
                 audioCaptureDevice = CreateWaveInDevice();
@@ -53,12 +53,11 @@ namespace AzureKinectRecorder
             audioCaptureDevice.StartRecording();
         }
 
-        public void InitializeRecorder(String recordDirectory) {
+        public void InitializeRecorder(String recordDirectory, String siteID) {
             this.recordDirectory = recordDirectory;
-            imageFullFileName = Path.Combine(recordDirectory, $"{deviceLabel}.mkv");
-            audioFullFillName = Path.Combine(recordDirectory, $"{deviceLabel}.wav");
-
-            
+            var fileName = siteID + "_" + DateTime.Now.ToString("yyyyMMddHHmm") + "_" + field.ToString();
+            imageFullFileName = Path.Combine(recordDirectory, $"{fileName}.mkv");
+            audioFullFillName = Path.Combine(recordDirectory, $"{fileName}.wav");
             audioFileWriter = new WaveFileWriter(audioFullFillName, audioCaptureDevice.WaveFormat);
         }
 
@@ -83,6 +82,7 @@ namespace AzureKinectRecorder
             if (Globals.getInstance().isRecording) {
                 //Debug.WriteLine("Flushing Data Available");
                 audioFileWriter.Write(e.Buffer, 0, e.BytesRecorded);
+                audioFileWriter.Flush();
                 //int secondsRecorded = (int)(writer.Length / writer.WaveFormat.AverageBytesPerSecond);
             }
         }
@@ -93,6 +93,7 @@ namespace AzureKinectRecorder
             cameraRecorder.Dispose();
 
             // audio complete
+            audioFileWriter?.Flush();
             audioFileWriter?.Dispose();
             audioFileWriter = null;
         }
@@ -100,6 +101,7 @@ namespace AzureKinectRecorder
         public void NewCaptureArrive(Capture capture) {
             if (Globals.getInstance().isRecording) {
                 cameraRecorder.WriteCapture(capture);
+                cameraRecorder.Flush();
             }
         }
 
@@ -115,7 +117,7 @@ namespace AzureKinectRecorder
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine($"An exception occured when {deviceLabel} is being closed!");
+                System.Diagnostics.Debug.WriteLine($"An exception occured when the {field.ToString()}-view Kinect is being closed!");
                 System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }

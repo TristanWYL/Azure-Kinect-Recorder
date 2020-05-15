@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureKinectRecorder", "Azur
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{7BFB5EA3-9B9D-4407-BFC1-A611B1F0DE60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor", "ImageProcessor\ImageProcessor.csproj", "{1342F094-16CE-4FDB-9990-B16524368F79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,18 @@ Global
 		{7BFB5EA3-9B9D-4407-BFC1-A611B1F0DE60}.Release|Any CPU.ActiveCfg = Release
 		{7BFB5EA3-9B9D-4407-BFC1-A611B1F0DE60}.Release|x64.ActiveCfg = Release
 		{7BFB5EA3-9B9D-4407-BFC1-A611B1F0DE60}.Release|x86.ActiveCfg = Release
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|x64.Build.0 = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Debug|x86.Build.0 = Debug|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|x64.ActiveCfg = Release|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|x64.Build.0 = Release|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|x86.ActiveCfg = Release|Any CPU
+		{1342F094-16CE-4FDB-9990-B16524368F79}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

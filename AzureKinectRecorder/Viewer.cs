@@ -23,15 +23,17 @@ namespace AzureKinectRecorder
         Device camera;
         MMDevice mic;
         DepthMode depthMode = DepthMode.Off;
-        ColorResolution ColorResolution = ColorResolution.R2160p;
+        ColorResolution ColorResolution = ColorResolution.R720p;
         FrameRate frameRate = FrameRate.Thirty;
         public DeviceConfiguration cameraConfig;
         public event NewCaptureEventHandler OnNewCapture;
+        private Field field;
 
-        public Viewer(Device openedCamera, MMDevice mic, String cameraLabel)
+        public Viewer(Device openedCamera, MMDevice mic, Field field)
         {
             InitializeComponent();
-            this.Text = cameraLabel;
+            this.field = field;
+            this.Text = field.ToString();
             camera = openedCamera;
             this.mic = mic;
             cameraConfig = new DeviceConfiguration
@@ -123,6 +125,7 @@ namespace AzureKinectRecorder
             camera.Dispose();
             Globals.getInstance().viewerRecorderPairs[this].Dispose();
             Globals.getInstance().viewerRecorderPairs.Remove(this);
+            Globals.getInstance().dictIsFieldOpen[this.field] = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

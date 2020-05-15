@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_09E90E2DDF3C439A9D9432DD9F309655"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_15519A1CCC278FBFD6ECF9B2F7D3BCAD"
         "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,8 +57,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_591B1560E255488E9E9A1F34B45CD691"
+        "MsmKey" = "8:_33F970A1B7534FB4A8D51A0C0F8877BB"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4243FCB6819949628690C3ACC9C8A251"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44BB794F367FB3EB7E28E372CA0F1EF8"
+        "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -63,7 +81,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_76C60D5337E24831ADF2F67927F5C348"
+        "MsmKey" = "8:_6D5CE50225E44ECA8E89D00580D527BA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_789E97CAB86C46C286EB719D526F962E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -99,12 +123,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B2BAE3E06FFB42A884C2B58327B3ED2E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_BB23B7807DAB903023D4DC4ACABA2ED7"
         "OwnerKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
         "MsmSig" = "8:_UNDEFINED"
@@ -124,13 +142,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6345C70DEC01EF440FCA124150AAD02C"
+        "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
+        "OwnerKey" = "8:_44BB794F367FB3EB7E28E372CA0F1EF8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -181,6 +199,12 @@
         "OwnerKey" = "8:_1A8E3E1A998CA31D1F5E84B9EA6571FA"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6345C70DEC01EF440FCA124150AAD02C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -199,6 +223,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -289,6 +329,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09E90E2DDF3C439A9D9432DD9F309655"
+            {
+            "SourcePath" = "8:..\\logomakr_l.ico"
+            "TargetName" = "8:logomakr_l.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_15519A1CCC278FBFD6ECF9B2F7D3BCAD"
@@ -415,9 +475,29 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_591B1560E255488E9E9A1F34B45CD691"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_33F970A1B7534FB4A8D51A0C0F8877BB"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\logomakr_xl.ico"
+            "SourcePath" = "8:..\\AzureKinectRecorder\\bin\\Release\\site.json"
+            "TargetName" = "8:site.json"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4243FCB6819949628690C3ACC9C8A251"
+            {
+            "SourcePath" = "8:..\\logomakr_xl.ico"
             "TargetName" = "8:logomakr_xl.ico"
             "Tag" = "8:"
             "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
@@ -433,6 +513,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_44BB794F367FB3EB7E28E372CA0F1EF8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_44BB794F367FB3EB7E28E372CA0F1EF8"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6345C70DEC01EF440FCA124150AAD02C"
@@ -466,10 +577,30 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76C60D5337E24831ADF2F67927F5C348"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D5CE50225E44ECA8E89D00580D527BA"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\logomakr_l.ico"
-            "TargetName" = "8:logomakr_l.ico"
+            "SourcePath" = "8:..\\logomakr_sm.ico"
+            "TargetName" = "8:logomakr_sm.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_789E97CAB86C46C286EB719D526F962E"
+            {
+            "SourcePath" = "8:..\\AzureRecorder.ico"
+            "TargetName" = "8:AzureRecorder.ico"
             "Tag" = "8:"
             "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
             "Condition" = "8:"
@@ -572,26 +703,6 @@
             {
             "SourcePath" = "8:..\\AzureKinectRecorder\\bin\\Debug\\k4arecord.dll"
             "TargetName" = "8:k4arecord.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B2BAE3E06FFB42A884C2B58327B3ED2E"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Downloads\\logomakr_sm.ico"
-            "TargetName" = "8:logomakr_sm.ico"
             "Tag" = "8:"
             "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
             "Condition" = "8:"
@@ -737,15 +848,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AzureRecorder"
-        "ProductCode" = "8:{9DDED94B-A455-4F35-95B1-15A8B21D7F3D}"
-        "PackageCode" = "8:{1BAAD738-D710-4F73-A8DC-52E13655D2D8}"
+        "ProductCode" = "8:{4E378D8E-39E3-42E4-8DFE-815F31DC2638}"
+        "PackageCode" = "8:{DE739B4B-FCD4-47F4-9529-AAEE039F1F8D}"
         "UpgradeCode" = "8:{9BA19B15-299F-4DF1-8BED-23340D7ED97C}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:2.1.0"
         "Manufacturer" = "8:SEEM-CUHK"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -755,7 +866,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Installer for a recorder which could record images and audio from the Azure Kinect DK"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_76C60D5337E24831ADF2F67927F5C348"
+        "ARPPRODUCTICON" = "8:_789E97CAB86C46C286EB719D526F962E"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -869,7 +980,7 @@
             "Target" = "8:_F4746872C28A4DC2A3D2601C800080E2"
             "Folder" = "8:_D1ADF41A259E40CEABE9C237664B0691"
             "WorkingFolder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
-            "Icon" = "8:_76C60D5337E24831ADF2F67927F5C348"
+            "Icon" = "8:_4243FCB6819949628690C3ACC9C8A251"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_655B1954371E42498498EAB77076338F"
@@ -883,7 +994,7 @@
             "Target" = "8:_F4746872C28A4DC2A3D2601C800080E2"
             "Folder" = "8:_66306812892C460C8A9CC744A94F3F99"
             "WorkingFolder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
-            "Icon" = "8:_76C60D5337E24831ADF2F67927F5C348"
+            "Icon" = "8:_4243FCB6819949628690C3ACC9C8A251"
             "Feature" = "8:"
             }
         }
