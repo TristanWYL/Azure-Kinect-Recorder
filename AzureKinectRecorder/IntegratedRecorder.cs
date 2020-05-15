@@ -73,8 +73,13 @@ namespace AzureKinectRecorder
             // can't set WaveFormat as WASAPI doesn't support SRC
             newWaveIn = new WasapiCapture(microphone);
             newWaveIn.DataAvailable += OnAudioDataAvailable;
-            // newWaveIn.RecordingStopped += OnRecordingStopped;
+            newWaveIn.RecordingStopped += OnRecordingStopped;
             return newWaveIn;
+        }
+
+        private void OnRecordingStopped(object sender, StoppedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         void OnAudioDataAvailable(object sender, WaveInEventArgs e)
