@@ -81,6 +81,9 @@
     <Compile Include="Globals.cs" />
     <Compile Include="ImageExtensions.cs" />
     <Compile Include="IntegratedRecorder.cs" />
+    <Compile Include="ToolStripTraceBarItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Viewer.cs">
       <SubType>Form</SubType>
     </Compile>

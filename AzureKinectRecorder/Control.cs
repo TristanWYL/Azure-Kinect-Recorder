@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using K4AdotNet.Sensor;
 using NAudio.CoreAudioApi;
+using NAudio.Wave;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -139,6 +140,8 @@ namespace AzureKinectRecorder
 
             // link the viewer with the recorder 
             viewer.OnNewCapture += new NewCaptureEventHandler(recorder.NewCaptureArrive);
+            // The below line will block the thread that works on DataAvailable
+            // recorder.audioCaptureDevice.DataAvailable += new EventHandler<WaveInEventArgs>(viewer.OnAudioDataAvailable);
             Globals.getInstance().viewerRecorderPairs[viewer] = recorder;
             Globals.getInstance().dictIsFieldOpen[field] = true;
         }
