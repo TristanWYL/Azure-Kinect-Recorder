@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace AzureKinectRecorder
         DateTime dtStartRecordingTime;
         JArray jsonTestSite;
         String siteID = "";
+        bool isTuned = false;
         public Control()
         {
             InitializeComponent();
@@ -141,9 +143,11 @@ namespace AzureKinectRecorder
             // link the viewer with the recorder 
             viewer.OnNewCapture += new NewCaptureEventHandler(recorder.NewCaptureArrive);
             // The below line will block the thread that works on DataAvailable
-            // recorder.audioCaptureDevice.DataAvailable += new EventHandler<WaveInEventArgs>(viewer.OnAudioDataAvailable);
+            recorder.AudioDataAvailable += new EventHandler<WaveInEventArgs>(viewer.OnAudioDataAvailable);
             Globals.getInstance().viewerRecorderPairs[viewer] = recorder;
             Globals.getInstance().dictIsFieldOpen[field] = true;
+            viewer.UpdateSensitivityLabel();
+            isTuned = false;
         }
 
         private void cboxMircophone_SelectedIndexChanged(object sender, EventArgs e)
@@ -192,6 +196,8 @@ namespace AzureKinectRecorder
                 btnPreview.Enabled = false;
                 Globals.getInstance().isRecording = true;
                 dtStartRecordingTime = DateTime.Now;
+
+                TonePlayer.GetInstance().PlayBeep(2000, 500, WaveFormType.SquareWave, 32000);
             }
             else {
                 Globals.getInstance().isRecording = false;
@@ -236,10 +242,37 @@ namespace AzureKinectRecorder
             if (Globals.getInstance().viewerRecorderPairs.Count == 0)
             {
                 btnRecord.Enabled = false;
+                btnTune.Enabled = false;
             }
             else {
-                btnRecord.Enabled = true;
+                if (isTuned) btnRecord.Enabled = true;
+                else btnRecord.Enabled = false;
+                btnTune.Enabled = true;
             }
+        }
+
+        private void btnTune_Click(object sender, EventArgs e)
+        {
+            Globals.getInstance().tunerProcesses = new List<TunerProcess>();
+            List<Viewer> viewers = Globals.getInstance().viewerRecorderPairs.Keys.ToList<Viewer>();
+            foreach (var viewer in viewers)
+            {
+                var waveFormat = Globals.getInstance().viewerRecorderPairs[viewer].audioCaptureDevice.WaveFormat;
+                TunerProcess tp = new TunerProcess(viewer.mic, waveFormat.BitsPerSample / 8);
+                Globals.getInstance().tunerProcesses.Add(tp);
+                Globals.getInstance().viewerRecorderPairs[viewer].AudioDataAvailable += tp.OnAudioDataAvailable;
+            }
+            Tuner tuner = new Tuner();
+            var dr = tuner.ShowDialog();
+            if (dr == DialogResult.OK) {
+                isTuned = true;
+            }
+            //Debug.WriteLine("Tuning Ended");
+            for(int i= 0; i < Globals.getInstance().viewerRecorderPairs.Count; i++){
+                Globals.getInstance().viewerRecorderPairs.ElementAt(i).Value.AudioDataAvailable -= Globals.getInstance().tunerProcesses[i].OnAudioDataAvailable;
+                Globals.getInstance().viewerRecorderPairs.ElementAt(i).Key.UpdateSensitivityLabel();
+            }
+            Globals.getInstance().tunerProcesses = null;
         }
     }
 }

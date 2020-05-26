@@ -37,9 +37,9 @@
             this.fpsRenderedLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.probarVolume = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSensitivity = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lbTest = new System.Windows.Forms.Label();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColor)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -64,12 +64,13 @@
             this.fpsRenderedLabel,
             this.toolStripStatusLabel1,
             this.probarVolume,
-            this.toolStripStatusLabel4});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 643);
+            this.toolStripStatusLabel4,
+            this.lblSensitivity});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 622);
             this.statusStrip1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1366, 42);
+            this.statusStrip1.Size = new System.Drawing.Size(1366, 63);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -127,33 +128,30 @@
             this.probarVolume.Step = 1;
             this.probarVolume.Value = 53;
             // 
-            // toolStripStatusLabel4
+            // lblSensitivity
             // 
-            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel4.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(128, 35);
-            this.toolStripStatusLabel4.Text = "Sensitivity:";
+            this.lblSensitivity.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSensitivity.Name = "lblSensitivity";
+            this.lblSensitivity.Size = new System.Drawing.Size(46, 56);
+            this.lblSensitivity.Text = "8.0";
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lbTest
+            // toolStripStatusLabel4
             // 
-            this.lbTest.AutoSize = true;
-            this.lbTest.Location = new System.Drawing.Point(23, 18);
-            this.lbTest.Name = "lbTest";
-            this.lbTest.Size = new System.Drawing.Size(51, 20);
-            this.lbTest.TabIndex = 3;
-            this.lbTest.Text = "label1";
+            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel4.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(128, 56);
+            this.toolStripStatusLabel4.Text = "Sensitivity:";
             // 
             // Viewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1366, 685);
-            this.Controls.Add(this.lbTest);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pictureBoxColor);
             this.Name = "Viewer";
@@ -180,8 +178,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel fpsRenderedLabel;
+        private System.Windows.Forms.ToolStripStatusLabel lblSensitivity;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
-        private System.Windows.Forms.Label lbTest;
     }
 }
 

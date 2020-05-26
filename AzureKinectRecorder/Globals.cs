@@ -21,6 +21,7 @@ namespace AzureKinectRecorder
 
         public bool isRecording = false;
         public Dictionary<Viewer, IntegratedRecorder> viewerRecorderPairs = new Dictionary<Viewer, IntegratedRecorder>();
+        public List<TunerProcess> tunerProcesses = new List<TunerProcess>();
         public Dictionary<Field, bool> dictIsFieldOpen = new Dictionary<Field, bool>();
     }
 

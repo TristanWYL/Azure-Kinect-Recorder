@@ -22,7 +22,7 @@ namespace AzureKinectRecorder
         // To visualize images received from Capture
         // private readonly ImageVisualizer colorImageVisualizer;
         Device camera;
-        MMDevice mic;
+        public MMDevice mic;
         DepthMode depthMode = DepthMode.Off;
         ColorResolution ColorResolution = ColorResolution.R720p;
         FrameRate frameRate = FrameRate.Thirty;
@@ -34,23 +34,23 @@ namespace AzureKinectRecorder
         public Viewer(Device openedCamera, MMDevice mic, Field field)
         {
             InitializeComponent();
-            //Add a trackbar in toolstrip
-            ToolStripTraceBarItem tbSensitivity = new ToolStripTraceBarItem();
-            //tbSensitivity.bar.Location = new System.Drawing.Point(78, 317);
-            tbSensitivity.bar.Maximum = 100;
-            tbSensitivity.bar.Name = "trackBar1";
-            tbSensitivity.bar.Size = new System.Drawing.Size(183, 69);
-            tbSensitivity.bar.TabIndex = 5;
-            tbSensitivity.bar.Value = volumeAmplification;
-            tbSensitivity.bar.TickStyle = System.Windows.Forms.TickStyle.None;
-            tbSensitivity.bar.ValueChanged += TractBarSensitivity_ValueChanged;
-            statusStrip1.Items.Add(tbSensitivity);
+            ////Add a trackbar in toolstrip
+            //ToolStripTraceBarItem tbSensitivity = new ToolStripTraceBarItem();
+            ////tbSensitivity.bar.Location = new System.Drawing.Point(78, 317);
+            //tbSensitivity.bar.Maximum = 100;
+            //tbSensitivity.bar.Name = "trackBar1";
+            //tbSensitivity.bar.Size = new System.Drawing.Size(183, 69);
+            //tbSensitivity.bar.TabIndex = 5;
+            //tbSensitivity.bar.Value = volumeAmplification;
+            //tbSensitivity.bar.TickStyle = System.Windows.Forms.TickStyle.None;
+            //tbSensitivity.bar.ValueChanged += TractBarSensitivity_ValueChanged;
+            //statusStrip1.Items.Add(tbSensitivity);
 
             this.field = field;
             this.Text = field.ToString();
             camera = openedCamera;
             this.mic = mic;
-            SetVolumeLevel(Convert.ToSingle(volumeAmplification / 100.0));
+            //SetVolumeLevel(Convert.ToSingle(volumeAmplification / 100.0));
             cameraConfig = new DeviceConfiguration
             {
                 CameraFps = frameRate,
@@ -68,6 +68,10 @@ namespace AzureKinectRecorder
 
         private void SetVolumeLevel(float value) {
             this.mic.AudioSessionManager.AudioSessionControl.SimpleAudioVolume.Volume = value;
+        }
+
+        public void UpdateSensitivityLabel() {
+            lblSensitivity.Text = this.mic.AudioSessionManager.AudioSessionControl.SimpleAudioVolume.Volume.ToString("0.00");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -113,8 +117,9 @@ namespace AzureKinectRecorder
             }
             this.Invoke(new MethodInvoker(delegate ()
             {
-                //probarVolume.Value = (int)(100 * max);
-                lbTest.Text = $"{max}";
+                //lbTest.Text = $"{max}";
+                if (max > 1) max = 1;
+                probarVolume.Value = (int)(100 * max);
             }));
         }
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,13 +31,16 @@ namespace AzureKinectRecorder
         // For audio recording
         public IWaveIn audioCaptureDevice;
         private List<WaveFileWriter> audioFileWriters;
-        WaveFileWriter testWriter;
         String siteID;
         private int indOfNextChannelToWrite = 0;
         private int bytesPerSample;
         private Mutex mutAudioFileProcess;
-        private Task taskAudioRecording;
         private List<WaveInEventArgs> audioBufferToRecord;
+        private Queue<WaveInEventArgs> qAudioBufferToRecord;
+        private Thread threadAudioRecording;
+        private Queue<WaveInEventArgs> qAudioBufferToDisplay;
+        private Thread threadAudioDisplay;
+        public event EventHandler<WaveInEventArgs> AudioDataAvailable;
 
         /// <summary>
         /// 
@@ -60,6 +64,30 @@ namespace AzureKinectRecorder
             // Not really start to record, while just for enabling calculating the volume peak value
             // refer to: https://github.com/naudio/NAudio/blob/master/Docs/RecordingLevelMeter.md
             audioCaptureDevice.StartRecording();
+            
+            qAudioBufferToDisplay = new Queue<WaveInEventArgs>();
+            threadAudioDisplay = new Thread(() => AudioDisplay());
+            threadAudioDisplay.Start();
+        }
+
+        private void AudioDisplay()
+        {
+            try { 
+                while (true) {
+                    if (qAudioBufferToDisplay.Count > 0)
+                    {
+                        var arg = qAudioBufferToDisplay.Dequeue();
+                        AudioDataAvailable?.Invoke(audioCaptureDevice, arg);
+                    }
+                    else {
+                        Thread.Sleep(100);
+                    }
+                }
+            }
+            catch (ThreadAbortException abortException)
+            {
+                
+            }
         }
 
         public void InitializeRecorder(String recordDirectory, String siteID) {
@@ -71,6 +99,7 @@ namespace AzureKinectRecorder
             imageFullFileName = Path.Combine(recordDirectory, $"{fileName}.mkv");
             audioFileWriters = new List<WaveFileWriter>();
             audioBufferToRecord = new List<WaveInEventArgs>();
+            qAudioBufferToRecord = new Queue<WaveInEventArgs>();
             var wf_original = audioCaptureDevice.WaveFormat;
             var wf = WaveFormat.CreateCustomFormat(
                 wf_original.Encoding, 
@@ -84,7 +113,6 @@ namespace AzureKinectRecorder
                 WaveFileWriter writer = new WaveFileWriter(audioFullFillName, wf);
                 audioFileWriters.Add(writer);
             }
-            testWriter = new WaveFileWriter(Path.Combine(recordDirectory, $"{fileName}.wav"), audioCaptureDevice.WaveFormat);
         }
 
         //private void ReInitializeAudioWriter() {
@@ -114,25 +142,25 @@ namespace AzureKinectRecorder
             throw new NotImplementedException();
         }
 
-        private async Task AudioRecordingProcessAsync() {
+        private void AudioRecordingProcess() {
             while(true) {
-                if (audioBufferToRecord.Count > 0)
+                if (qAudioBufferToRecord.Count > 0)
                 {
-                    var curBuffer = audioBufferToRecord.First();
+                    //mutAudioFileProcess.WaitOne();
+                    var curBuffer = qAudioBufferToRecord.Dequeue();
+                    //mutAudioFileProcess.ReleaseMutex();
                     for (int i = 0; i < curBuffer.BytesRecorded / bytesPerSample; i++)
                     {
                         audioFileWriters[indOfNextChannelToWrite].Write(curBuffer.Buffer, i * bytesPerSample, bytesPerSample);
                         indOfNextChannelToWrite++;
-                        indOfNextChannelToWrite = indOfNextChannelToWrite % audioCaptureDevice.WaveFormat.Channels;
+                        indOfNextChannelToWrite %= audioCaptureDevice.WaveFormat.Channels;
                     }
-                    testWriter.Write(curBuffer.Buffer, 0, curBuffer.BytesRecorded);
-                    audioBufferToRecord.RemoveAt(0);
                 }
                 else
                 {
                     if (Globals.getInstance().isRecording)
                     {
-                        await Task.Delay(100);
+                        Thread.Sleep(100);
                     }
                     else {
                         break;
@@ -145,30 +173,44 @@ namespace AzureKinectRecorder
                 writer.Dispose();
             }
             audioFileWriters = null;
-            testWriter.Flush();
-            testWriter.Dispose();
-            testWriter = null;
-            audioBufferToRecord.Clear();
-            audioBufferToRecord = null;
+            qAudioBufferToRecord.Clear();
+            qAudioBufferToRecord = null;
         }
 
+
+        // cannot overload in this thread, otherwise some data will be lost
+        // This is why some other threads are introduced for reducing the workload of this thread
         void OnAudioDataAvailable(object sender, WaveInEventArgs e)
         {
             if (Globals.getInstance().isRecording)
             {
-                if (taskAudioRecording == null) {
-                    taskAudioRecording = Task.Run(()=> AudioRecordingProcessAsync());
+                //if (taskAudioRecording == null) {
+                //    taskAudioRecording = Task.Run(()=> AudioRecordingProcessAsync());
+                //}
+                if (threadAudioRecording == null)
+                {
+                    threadAudioRecording = new Thread(() => AudioRecordingProcess());
+                    threadAudioRecording.Start();
                 }
-                audioBufferToRecord.Add(e);
+
+                Byte[] buffer = e.Buffer.ToArray();
+                //mutAudioFileProcess.WaitOne();
+                qAudioBufferToRecord.Enqueue(new WaveInEventArgs(buffer, e.BytesRecorded));
+                //mutAudioFileProcess.ReleaseMutex();
             }
+            Byte[] buf = e.Buffer.ToArray();
+            qAudioBufferToDisplay.Enqueue(new WaveInEventArgs(buf, e.BytesRecorded));
         }
 
-        public async void StopRecord() {
+        public void StopRecord() {
             // flush data into hard disk
             cameraRecorder.Flush();
             cameraRecorder.Dispose();
-            await taskAudioRecording;
-            taskAudioRecording = null;
+            
+            //await taskAudioRecording;
+            //taskAudioRecording = null;
+            threadAudioRecording.Join();
+            threadAudioRecording = null;
         }
 
         //private void DisposeAudioWriters() {
@@ -189,6 +231,10 @@ namespace AzureKinectRecorder
             mutAudioFileProcess.Dispose();
             try
             {
+                threadAudioDisplay.Abort();
+                threadAudioDisplay.Join();
+                threadAudioDisplay = null;
+                AudioDataAvailable = null;
                 // audio complete
                 audioCaptureDevice.DataAvailable -= OnAudioDataAvailable;
                 audioCaptureDevice.StopRecording();
