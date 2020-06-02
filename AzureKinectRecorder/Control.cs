@@ -72,12 +72,15 @@ namespace AzureKinectRecorder
         {
             var deviceEnum = new MMDeviceEnumerator();
             var devices = deviceEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToList();
+            List<MMDevice> microphones = new List<MMDevice>();
+            foreach (var device in devices)
+            {
+                if (device.FriendlyName.ToLower().Contains("kinect")) {
+                    microphones.Add(device);
+                }
+            }
 
-            //foreach (var device in devices) {
-            //    cboxMircophone.Items.Add(device.FriendlyName);
-            //}
-
-            cboxMircophone.DataSource = devices;
+            cboxMircophone.DataSource = microphones;
             cboxMircophone.DisplayMember = "FriendlyName";
             cboxMircophone.SelectedIndex = -1;
             isCboxMicrophoneSelected = false;
@@ -102,43 +105,97 @@ namespace AzureKinectRecorder
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
+            if (Device.InstalledCount > 2 && Globals.getInstance().viewerRecorderPairs.Count == 1) {
+                MessageBox.Show("Cannot open next camera automatically as more than two cameras are being connected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (Globals.getInstance().viewerRecorderPairs.Count == 2)
+            {
+                MessageBox.Show("Can only open 2 cameras at most.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if ((!rbtnClose.Checked) && (!rbtnFar.Checked)) {
                 MessageBox.Show("Please specify the field type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             Field field = Field.Close;
+            Device camera;
+            MMDevice microphone;
 
-            if (rbtnClose.Checked) {
-                if (Globals.getInstance().dictIsFieldOpen[Field.Close]) {
-                    MessageBox.Show("The \"Close\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                field = Field.Close;
-            }
-            if (rbtnFar.Checked)
+            if (Globals.getInstance().viewerRecorderPairs.Count == 1)
             {
-                if (Globals.getInstance().dictIsFieldOpen[Field.Far])
-                {
-                    MessageBox.Show("The \"Far\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (Device.InstalledCount == 1) {
+                    MessageBox.Show("The only one installed camera has been opened.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                field = Field.Far;
+                if (Globals.getInstance().dictIsFieldOpen[Field.Close])
+                {
+                    field = Field.Far;
+                }
+                else
+                {
+                    field = Field.Close;
+                }
+
+                int cameraIndex = 0;
+                if (Globals.getInstance().viewerRecorderPairs.First().Key.camera.DeviceIndex == 0) {
+                    cameraIndex = 1;
+                }
+                bool isCameraOpen = Device.TryOpen(out var cam, cameraIndex);
+                if (!isCameraOpen)
+                {
+                    MessageBox.Show("The second camera may be being used by other program or the power is unplugged, so failed to open it.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                camera = cam;
+
+                if (Globals.getInstance().viewerRecorderPairs.First().Key.mic == ((List<MMDevice>)(cboxMircophone.DataSource))[0])
+                {
+                    microphone = ((List<MMDevice>)(cboxMircophone.DataSource))[1];
+                }
+                else {
+                    microphone = ((List<MMDevice>)(cboxMircophone.DataSource))[0];
+                }
+            }
+            else {
+                if (rbtnClose.Checked)
+                {
+                    if (Globals.getInstance().dictIsFieldOpen[Field.Close])
+                    {
+                        MessageBox.Show("The \"Close\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    field = Field.Close;
+                }
+                if (rbtnFar.Checked)
+                {
+                    if (Globals.getInstance().dictIsFieldOpen[Field.Far])
+                    {
+                        MessageBox.Show("The \"Far\" field has been opened. Please change the \"Field\" setting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    field = Field.Far;
+                }
+
+                // Device device = Device.Open(cboxCamera.SelectedIndex);
+                bool isCameraOpen = Device.TryOpen(out var cam, cboxCamera.SelectedIndex);
+                if (!isCameraOpen)
+                {
+                    MessageBox.Show("The selected camera may be being used by other program or the power is unplugged, so failed to open it.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                microphone = (MMDevice)cboxMircophone.SelectedItem;
+                camera = cam;
             }
 
-            // Device device = Device.Open(cboxCamera.SelectedIndex);
-            bool isCameraOpen = Device.TryOpen(out var camera, cboxCamera.SelectedIndex);
-            if (!isCameraOpen) {
-                MessageBox.Show("The selected camera may be being used by other program or the power is unplugged, so failed to open it.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            MMDevice mic = (MMDevice)cboxMircophone.SelectedItem;
-
-            Viewer viewer = new Viewer(camera, mic, field);
+            Viewer viewer = new Viewer(camera, microphone, field);
             viewer.Show();
 
             //TODO: if succeed:
-            IntegratedRecorder recorder = new IntegratedRecorder(camera, viewer.cameraConfig, field, mic);
+            IntegratedRecorder recorder = new IntegratedRecorder(camera, viewer.cameraConfig, field, microphone);
 
             // link the viewer with the recorder 
             viewer.OnNewCapture += new NewCaptureEventHandler(recorder.NewCaptureArrive);
@@ -251,10 +308,6 @@ namespace AzureKinectRecorder
                 if (Globals.getInstance().isRecording)
                     btnTune.Enabled = false;
                 else btnTune.Enabled = true;
-
-                if (Globals.getInstance().viewerRecorderPairs.Count == 2) {
-                    btnPreview.Enabled = false;
-                }
             }
         }
 

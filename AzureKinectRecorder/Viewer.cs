@@ -21,7 +21,7 @@ namespace AzureKinectRecorder
     {
         // To visualize images received from Capture
         // private readonly ImageVisualizer colorImageVisualizer;
-        Device camera;
+        public Device camera;
         public MMDevice mic;
         DepthMode depthMode = DepthMode.Off;
         ColorResolution ColorResolution = ColorResolution.R720p;
