@@ -247,7 +247,14 @@ namespace AzureKinectRecorder
             else {
                 if (isTuned) btnRecord.Enabled = true;
                 else btnRecord.Enabled = false;
-                btnTune.Enabled = true;
+
+                if (Globals.getInstance().isRecording)
+                    btnTune.Enabled = false;
+                else btnTune.Enabled = true;
+
+                if (Globals.getInstance().viewerRecorderPairs.Count == 2) {
+                    btnPreview.Enabled = false;
+                }
             }
         }
 
@@ -264,9 +271,17 @@ namespace AzureKinectRecorder
             }
             Tuner tuner = new Tuner();
             var dr = tuner.ShowDialog();
-            if (dr == DialogResult.OK) {
+            if (dr == DialogResult.OK)
+            {
                 isTuned = true;
             }
+            else {
+                isTuned = false;
+                foreach (var tp in Globals.getInstance().tunerProcesses) {
+                    tp.RestoreVolumeLevel();
+                }
+            }
+
             //Debug.WriteLine("Tuning Ended");
             for(int i= 0; i < Globals.getInstance().viewerRecorderPairs.Count; i++){
                 Globals.getInstance().viewerRecorderPairs.ElementAt(i).Value.AudioDataAvailable -= Globals.getInstance().tunerProcesses[i].OnAudioDataAvailable;

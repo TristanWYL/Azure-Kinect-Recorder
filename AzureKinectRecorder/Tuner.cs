@@ -24,7 +24,12 @@ namespace AzureKinectRecorder
 
         private void Tuner_Load(object sender, EventArgs e)
         {
-            lblNum.Visible = false;
+            //lblNum.Visible = false;
+            timer1.Enabled = true;
+            foreach (var tp in Globals.getInstance().tunerProcesses)
+            {
+                tp.tuningStarted = true;
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -33,8 +38,8 @@ namespace AzureKinectRecorder
             OnPaintBackground(e);
             lblNum.Top = (int)((this.Height - lblNum.Height) / 2);
             lblNum.Left = (int)((this.Width - lblNum.Width) / 2);
-            btnStart.Top = (int)((this.Height - btnStart.Height) / 2);
-            btnStart.Left = (int)((this.Width - btnStart.Width) / 2);
+            //btnStart.Top = (int)((this.Height - btnStart.Height) / 2);
+            //btnStart.Left = (int)((this.Width - btnStart.Width) / 2);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -48,8 +53,9 @@ namespace AzureKinectRecorder
         private void Tuner_FormClosing(object sender, FormClosingEventArgs e)
         {
             timer1.Enabled = false;
-            foreach (var tp in Globals.getInstance().tunerProcesses) {
-                tp.OnProcessEnd();
+            foreach (var tp in Globals.getInstance().tunerProcesses)
+            {
+                tp.tuningStarted = false;
             }
         }
 
@@ -58,6 +64,10 @@ namespace AzureKinectRecorder
             num++;
             if (num > 9)
             {
+                foreach (var tp in Globals.getInstance().tunerProcesses)
+                {
+                    tp.OnProcessEnd();
+                }
                 this.DialogResult = DialogResult.OK;
                 this.Close();
                 return;
@@ -71,13 +81,14 @@ namespace AzureKinectRecorder
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            lblNum.Visible = true;
-            btnStart.Visible = false;
-            timer1.Enabled = true;
-            foreach (var tp in Globals.getInstance().tunerProcesses)
-            {
-                tp.tuningStarted = true;
-            }
+            //lblNum.Visible = true;
+            //btnStart.Visible = false;
+            //timer1.Enabled = true;
+            //foreach (var tp in Globals.getInstance().tunerProcesses)
+            //{
+            //    tp.tuningStarted = true;
+            //}
+            //this.Update();
         }
 
         
@@ -88,20 +99,32 @@ namespace AzureKinectRecorder
         byte[] buffer;
         int bytesPerSample;
         bool hasData;
-        float maxSensitivity = (float)1.0;
-        float minSensitivity = (float)0.9;
+        float maxSensitivity = 1.0f;
+        float minSensitivity = 0.8f;
+        float maxSensitivityTemp = (float)1.0;
+        float minSensitivityTemp = (float)0.8;
         float maxAmplitude = (float)0.5; // refer to: https://manual.audacityteam.org/man/tutorial_making_a_test_recording.html
-        float sensitivityStep = (float)0.02;
+        float sensitivityStep = (float)0.01;
         Mutex mu = new Mutex();
         List<float> sensitivitySeries;
         public bool tuningStarted = false;
+        public float originalVolumeLevel;
+
+        // To search the most proper volume level asap, we use two strategies: BinarySearch and StepSearch
+        // BinarySearch first
+        private bool isBinarySearch = true; 
 
         public TunerProcess(MMDevice mic, int bytesPerSample) {
             this.mic = mic;
             hasData = false;
             this.bytesPerSample = bytesPerSample;
             sensitivitySeries = new List<float>();
-            SetVolumeLevel(minSensitivity);
+            originalVolumeLevel = GetVolumeLevel();
+            SetVolumeLevel((minSensitivityTemp+ maxSensitivityTemp)/2);
+        }
+
+        public void RestoreVolumeLevel() {
+            SetVolumeLevel(originalVolumeLevel);
         }
 
         private void SetVolumeLevel(float value)
@@ -137,7 +160,8 @@ namespace AzureKinectRecorder
             for (int i = sensitivitySeries.Count - 3; i < sensitivitySeries.Count; i++) {
                 sum += sensitivitySeries[i];
             }
-            float finalSensitivity = sum / numAverage;
+            var factor = 1.0f;
+            float finalSensitivity = sum / numAverage * factor;
             SetVolumeLevel(finalSensitivity);
         }
 
@@ -161,15 +185,59 @@ namespace AzureKinectRecorder
         }
 
         private float GetSensitivityDelta(byte[] from) {
+            var max = GetMaxAmplitude(from);
+            if (isBinarySearch)
+            {
+                var curSensitivity = GetVolumeLevel();
+                if (max > maxAmplitude)
+                {
+                    // reduce the sensitivity
+                    maxSensitivityTemp = curSensitivity;
+                }
+                else
+                {
+                    minSensitivityTemp = curSensitivity;
+                }
+                var middle = (maxSensitivityTemp + minSensitivityTemp) / 2;
+
+                if (maxSensitivityTemp - minSensitivityTemp < 2 * sensitivityStep)
+                {
+                    isBinarySearch = false;
+                }
+                return middle - curSensitivity;
+            }
+            else {
+                if (max > maxAmplitude)
+                {
+                    return -sensitivityStep;
+                }
+                else {
+                    return sensitivityStep;
+                }
+            }
+            
             
             var sd = GetStandardDeviation(from);
-            if (3 * sd < maxAmplitude)
+            if (3.5 * sd < maxAmplitude)
             {
                 return sensitivityStep;
             }
             else {
                 return -sensitivityStep;
             }
+        }
+
+        private float GetMaxAmplitude(byte[] values) {
+            var buffer = new WaveBuffer(values);
+            float max = float.MinValue;
+            for (int i = 0; i < values.Length / bytesPerSample; i++)
+            {
+                var temp = Math.Abs(buffer.FloatBuffer[i]);
+                if (temp > max) {
+                    max = temp;
+                }
+            }
+            return max;
         }
 
         private double GetStandardDeviation(byte[] values)

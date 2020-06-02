@@ -248,7 +248,7 @@ namespace AzureKinectRecorder
         }
 
         ~IntegratedRecorder() {
-            this.Dispose();
+            //this.Dispose();
         }
     }
 }
