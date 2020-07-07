@@ -146,9 +146,9 @@ namespace AzureKinectRecorder
             while(true) {
                 if (qAudioBufferToRecord.Count > 0)
                 {
-                    //mutAudioFileProcess.WaitOne();
+                    mutAudioFileProcess.WaitOne();
                     var curBuffer = qAudioBufferToRecord.Dequeue();
-                    //mutAudioFileProcess.ReleaseMutex();
+                    mutAudioFileProcess.ReleaseMutex();
                     for (int i = 0; i < curBuffer.BytesRecorded / bytesPerSample; i++)
                     {
                         audioFileWriters[indOfNextChannelToWrite].Write(curBuffer.Buffer, i * bytesPerSample, bytesPerSample);
@@ -194,9 +194,9 @@ namespace AzureKinectRecorder
                 }
 
                 Byte[] buffer = e.Buffer.ToArray();
-                //mutAudioFileProcess.WaitOne();
+                mutAudioFileProcess.WaitOne();
                 qAudioBufferToRecord.Enqueue(new WaveInEventArgs(buffer, e.BytesRecorded));
-                //mutAudioFileProcess.ReleaseMutex();
+                mutAudioFileProcess.ReleaseMutex();
             }
             Byte[] buf = e.Buffer.ToArray();
             qAudioBufferToDisplay.Enqueue(new WaveInEventArgs(buf, e.BytesRecorded));
