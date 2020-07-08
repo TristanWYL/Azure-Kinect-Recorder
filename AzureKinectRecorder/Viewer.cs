@@ -142,8 +142,8 @@ namespace AzureKinectRecorder
         {
             probarVolume.Value = (int)Math.Round(mic.AudioMeterInformation.MasterPeakValue * 100);
             // Debug.WriteLine(mic.AudioMeterInformation.MasterPeakValue);
-            this.fpsProducedLabel.Text = $"{fpsRender:F2}";
-            this.fpsRenderedLabel.Text = $"{fpsProduced:F2}";
+            this.fpsProducedLabel.Text = $"{fpsProduced:F2}";
+            this.fpsRenderedLabel.Text = $"{fpsRender:F2}";
         }
 
         private void Viewer_FormClosing(object sender, FormClosingEventArgs e)
