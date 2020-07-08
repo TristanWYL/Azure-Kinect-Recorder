@@ -51,7 +51,6 @@ namespace AzureKinectRecorder
         private Queue<Capture> qVideoBufferToDisplay;
         private Queue<Capture> qVideoBufferToRecord;
         public double fpsProduced = 0;
-        public double fpsRender = 0;
         private bool isDisposing = false;
         /// <summary>
         /// 
@@ -282,8 +281,6 @@ namespace AzureKinectRecorder
                     break;
                 }
             }
-
-
         }
 
         private void VideoDisplayLoop()
