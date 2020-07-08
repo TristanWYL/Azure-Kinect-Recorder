@@ -141,7 +141,7 @@ namespace AzureKinectRecorder
                 }
 
                 int cameraIndex = 0;
-                if (Globals.getInstance().viewerRecorderPairs.First().Key.camera.DeviceIndex == 0) {
+                if (Globals.getInstance().viewerRecorderPairs.First().Value.camera.DeviceIndex == 0) {
                     cameraIndex = 1;
                 }
                 bool isCameraOpen = Device.TryOpen(out var cam, cameraIndex);
@@ -191,16 +191,16 @@ namespace AzureKinectRecorder
                 camera = cam;
             }
 
-            Viewer viewer = new Viewer(camera, microphone, field);
+            Viewer viewer = new Viewer(microphone, field);
             viewer.Show();
 
             //TODO: if succeed:
-            IntegratedRecorder recorder = new IntegratedRecorder(camera, viewer.cameraConfig, field, microphone);
+            IntegratedRecorder recorder = new IntegratedRecorder(camera, field, microphone);
 
             // link the viewer with the recorder 
-            viewer.OnNewCapture += new NewCaptureEventHandler(recorder.NewCaptureArrive);
             // The below line will block the thread that works on DataAvailable
             recorder.AudioDataAvailable += new EventHandler<WaveInEventArgs>(viewer.OnAudioDataAvailable);
+            recorder.VideoDataAvailable += new EventHandler<System.Drawing.Image>(viewer.OnFrameDataAvailable);
             Globals.getInstance().viewerRecorderPairs[viewer] = recorder;
             Globals.getInstance().dictIsFieldOpen[field] = true;
             viewer.UpdateSensitivityLabel();

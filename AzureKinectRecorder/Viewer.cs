@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,17 +22,15 @@ namespace AzureKinectRecorder
     {
         // To visualize images received from Capture
         // private readonly ImageVisualizer colorImageVisualizer;
-        public Device camera;
         public MMDevice mic;
-        DepthMode depthMode = DepthMode.Off;
-        ColorResolution ColorResolution = ColorResolution.R720p;
-        FrameRate frameRate = FrameRate.Thirty;
-        public DeviceConfiguration cameraConfig;
-        public event NewCaptureEventHandler OnNewCapture;
         private Field field;
         private int volumeAmplification = 97; // From 0 to 100. 100 means most amplification
+        private double fpsProduced = 0;
+        private double fpsRender = 0;
+        private int frameCountRenderedTemp = 0;
+        Stopwatch stopWatchCountFrameRendered = new Stopwatch();
 
-        public Viewer(Device openedCamera, MMDevice mic, Field field)
+        public Viewer(MMDevice mic, Field field)
         {
             InitializeComponent();
             ////Add a trackbar in toolstrip
@@ -48,17 +47,10 @@ namespace AzureKinectRecorder
 
             this.field = field;
             this.Text = field.ToString();
-            camera = openedCamera;
             this.mic = mic;
             //SetVolumeLevel(Convert.ToSingle(volumeAmplification / 100.0));
-            cameraConfig = new DeviceConfiguration
-            {
-                CameraFps = frameRate,
-                ColorFormat = ImageFormat.ColorMjpg,
-                ColorResolution = ColorResolution,
-                DepthMode = depthMode,
-                WiredSyncMode = WiredSyncMode.Standalone,
-            };
+
+            stopWatchCountFrameRendered.Start();
         }
 
         private void TractBarSensitivity_ValueChanged(object sender, EventArgs e)
@@ -76,10 +68,24 @@ namespace AzureKinectRecorder
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            camera.StartCameras(cameraConfig);
             // mic.AudioEndpointVolume.Mute = false;
-            //timer1.Enabled = true;
-            StartRender();
+            timer1.Enabled = true;
+        }
+
+        public void OnFrameDataAvailable(object sender, System.Drawing.Image image) {
+            frameCountRenderedTemp++;
+            this.BeginInvoke(new MethodInvoker(delegate ()
+            {
+                fpsProduced = ((IntegratedRecorder)sender).fpsProduced;
+                pictureBoxColor.Image = image;
+                this.Update();
+            }));
+            if (stopWatchCountFrameRendered.Elapsed > TimeSpan.FromSeconds(2))
+            {
+                fpsRender = (double)frameCountRenderedTemp / stopWatchCountFrameRendered.Elapsed.TotalSeconds;
+                frameCountRenderedTemp = 0;
+                stopWatchCountFrameRendered.Restart();
+            }
         }
 
         public void OnAudioDataAvailable(object sender, WaveInEventArgs e) {
@@ -115,7 +121,7 @@ namespace AzureKinectRecorder
                 // is this the max value?
                 if (sample > max) max = sample;
             }
-            this.Invoke(new MethodInvoker(delegate ()
+            this.BeginInvoke(new MethodInvoker(delegate ()
             {
                 //lbTest.Text = $"{max}";
                 if (max > 1) max = 1;
@@ -123,75 +129,9 @@ namespace AzureKinectRecorder
             }));
         }
 
-        private async void StartRender()
-        {
-            Stopwatch sw = new Stopwatch();
-            int frameCountProduced = 0;
-            int frameCountDisplay = 0;
-            bool isRendererIdle = true;
-            sw.Start();
-            while (!this.IsDisposed) {
-                Capture curCapture = await Task.Run(() =>
-                {
-                    bool isSucceeded = false;
-                    Capture capture = null;
-                    try {
-                        isSucceeded = camera.TryGetCapture(out capture, Timeout.FromSeconds(0.1)); 
-                    } catch {
-                        isSucceeded = false;
-                        capture?.Dispose();
-                    }
-                     
-                    if (isSucceeded)
-                    {
-                        if(OnNewCapture != null) { OnNewCapture(capture); }
-                        frameCountProduced++;
-                        return capture;
-                    }
-                    else {
-                        return null;
-                    }
-                });
-                if (curCapture != null) {
-                    if (isRendererIdle)
-                    {
-                        isRendererIdle = false;
-                        Capture curDisplayCapture = curCapture.DuplicateReference();
-                        Task.Run(() =>
-                        {
-                            pictureBoxColor.Image = curDisplayCapture.ColorImage.CreateBitmap();
-                            isRendererIdle = true;
-                            curDisplayCapture.Dispose();
-                            frameCountDisplay++;
-                        });
-                    }
-                    else
-                    {
-                        curCapture.Dispose();
-                    }
-                }
-                
-
-                if (sw.Elapsed > TimeSpan.FromSeconds(2))
-                {
-                    double framesProducedPerSecond = (double)frameCountProduced / sw.Elapsed.TotalSeconds;
-                    double framesRenderedPerSecond = (double)frameCountDisplay / sw.Elapsed.TotalSeconds;
-                    this.fpsProducedLabel.Text = $"{framesProducedPerSecond:F2}";
-                    this.fpsRenderedLabel.Text = $"{framesRenderedPerSecond:F2}";
-                    frameCountProduced = 0;
-                    frameCountDisplay = 0;
-                    sw.Restart();
-                }
-
-                this.Update();
-            }
-        }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            OnNewCapture = null;
-            camera.StopCameras();
-            camera.Dispose();
+        {            
             //Globals.getInstance().viewerRecorderPairs[this].audioCaptureDevice.DataAvailable -= OnAudioDataAvailable;
             Globals.getInstance().viewerRecorderPairs[this].Dispose();
             Globals.getInstance().viewerRecorderPairs.Remove(this);
@@ -202,6 +142,8 @@ namespace AzureKinectRecorder
         {
             probarVolume.Value = (int)Math.Round(mic.AudioMeterInformation.MasterPeakValue * 100);
             // Debug.WriteLine(mic.AudioMeterInformation.MasterPeakValue);
+            this.fpsProducedLabel.Text = $"{fpsRender:F2}";
+            this.fpsRenderedLabel.Text = $"{fpsProduced:F2}";
         }
 
         private void Viewer_FormClosing(object sender, FormClosingEventArgs e)
