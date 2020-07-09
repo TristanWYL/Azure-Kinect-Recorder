@@ -36,6 +36,7 @@ namespace AzureKinectRecorder
         private int indOfNextChannelToWrite = 0;
         private int bytesPerSample;
         private Mutex mutAudioFileProcess;
+        private Mutex mutAudioDisplay;
         private List<WaveInEventArgs> audioBufferToRecord;
         private Queue<WaveInEventArgs> qAudioBufferToRecord;
         private Thread threadAudioRecording;
@@ -91,6 +92,7 @@ namespace AzureKinectRecorder
             qVideoBufferToDisplay = new Queue<Capture>();
             mutVideoRecord = new Mutex();
             mutVideoDisplay = new Mutex();
+            mutAudioDisplay = new Mutex();
             threadVideoFrameExtract = new Thread(() => ImageExtractLoop());
             threadVideoFrameExtract.Start();
             threadVideoDisplay = new Thread(() => VideoDisplayLoop());
@@ -321,25 +323,33 @@ namespace AzureKinectRecorder
 
         private void AudioDisplay()
         {
-            try
+            while (true)
             {
-                while (true)
+                if (qAudioBufferToDisplay.Count > 0)
                 {
-                    if (qAudioBufferToDisplay.Count > 0)
+                    mutAudioDisplay.WaitOne();
+                    while (qAudioBufferToDisplay.Count > 1)
                     {
-                        var arg = qAudioBufferToDisplay.Dequeue();
-                        AudioDataAvailable?.Invoke(audioCaptureDevice, arg);
+                        qAudioBufferToDisplay.Dequeue();
+                    }
+                    var arg = qAudioBufferToDisplay.Dequeue();
+                    mutAudioDisplay.ReleaseMutex();
+                    AudioDataAvailable?.Invoke(audioCaptureDevice, arg);
+                }
+                else
+                {
+                    if (!isDisposing)
+                    {
+                        Thread.Sleep(30);
                     }
                     else
                     {
-                        Thread.Sleep(100);
+                        break;
                     }
                 }
             }
-            catch (ThreadAbortException abortException)
-            {
-
-            }
+            mutAudioDisplay.Dispose();
+            
         }
 
         
@@ -364,8 +374,9 @@ namespace AzureKinectRecorder
                 qAudioBufferToRecord.Enqueue(new WaveInEventArgs(buffer, e.BytesRecorded));
                 mutAudioFileProcess.ReleaseMutex();
             }
-            Byte[] buf = e.Buffer.ToArray();
-            qAudioBufferToDisplay.Enqueue(new WaveInEventArgs(buf, e.BytesRecorded));
+            mutAudioDisplay.WaitOne();
+            qAudioBufferToDisplay.Enqueue(e);
+            mutAudioDisplay.ReleaseMutex();
         }
 
         public void StopRecord() {
@@ -403,7 +414,6 @@ namespace AzureKinectRecorder
                 threadVideoFrameExtract.Join();
                 threadVideoFrameExtract = null;
 
-                threadAudioDisplay.Abort();
                 threadAudioDisplay.Join();
                 threadAudioDisplay = null;
                 AudioDataAvailable = null;
