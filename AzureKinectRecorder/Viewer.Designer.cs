@@ -169,7 +169,7 @@
             this.lblSampleRate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.lblSampleRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSampleRate.Name = "lblSampleRate";
-            this.lblSampleRate.Size = new System.Drawing.Size(120, 56);
+            this.lblSampleRate.Size = new System.Drawing.Size(65, 56);
             this.lblSampleRate.Text = "Sample Rate";
             // 
             // label1
