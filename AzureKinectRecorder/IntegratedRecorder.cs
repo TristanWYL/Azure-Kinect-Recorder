@@ -368,7 +368,6 @@ namespace AzureKinectRecorder
                     Thread.Sleep(30);
                 }
             }
-            mutVideoDisplay.Dispose();
             while (qVideoBufferToDisplay.Count > 0)
             {
                 var capture = qVideoBufferToDisplay.Dequeue();
@@ -403,8 +402,6 @@ namespace AzureKinectRecorder
                     }
                 }
             }
-            mutAudioDisplay.Dispose();
-            
         }
 
         
