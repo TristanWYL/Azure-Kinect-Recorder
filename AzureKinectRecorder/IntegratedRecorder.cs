@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace AzureKinectRecorder
 {
@@ -38,7 +39,7 @@ namespace AzureKinectRecorder
         private Mutex mutAudioFileProcess;
         private Mutex mutAudioDisplay;
         private List<WaveInEventArgs> audioBufferToRecord;
-        private Queue<WaveInEventArgs> qAudioBufferToRecord;
+        public Queue<WaveInEventArgs> qAudioBufferToRecord;
         private Thread threadAudioRecording;
         private Queue<WaveInEventArgs> qAudioBufferToDisplay;
         private Thread threadAudioDisplay;
@@ -50,9 +51,16 @@ namespace AzureKinectRecorder
         private Mutex mutVideoRecord;
         private Mutex mutVideoDisplay;
         private Queue<Capture> qVideoBufferToDisplay;
-        private Queue<Capture> qVideoBufferToRecord;
+        public Queue<Capture> qVideoBufferToRecord;
         public double fpsProduced = 0;
+        public double audioSampleRate = 0;
+        private int numberOfAudioSampleTemp = 0;
+        private Stopwatch stopwatchSampleRate = new Stopwatch();
         private bool isDisposing = false;
+        private System.Timers.Timer flushTimer;
+        private bool shouldVideoFileFlush = false;
+        private bool shouldAudioFileFlush = false;
+        
         /// <summary>
         /// 
         /// </summary>
@@ -69,6 +77,7 @@ namespace AzureKinectRecorder
             {
                 audioCaptureDevice = CreateWaveInDevice();
             }
+            bytesPerSample = audioCaptureDevice.WaveFormat.BitsPerSample / 8;
 
             DepthMode depthMode = DepthMode.Off;
             ColorResolution ColorResolution = ColorResolution.R720p;
@@ -88,19 +97,25 @@ namespace AzureKinectRecorder
             // Not really start to record, while just for enabling calculating the volume peak value
             // refer to: https://github.com/naudio/NAudio/blob/master/Docs/RecordingLevelMeter.md
             audioCaptureDevice.StartRecording();
-
+            
             qVideoBufferToDisplay = new Queue<Capture>();
             mutVideoRecord = new Mutex();
             mutVideoDisplay = new Mutex();
             mutAudioDisplay = new Mutex();
             threadVideoFrameExtract = new Thread(() => ImageExtractLoop());
+            threadVideoFrameExtract.Priority = ThreadPriority.Highest;
             threadVideoFrameExtract.Start();
+
             threadVideoDisplay = new Thread(() => VideoDisplayLoop());
+            threadVideoDisplay.Priority = ThreadPriority.Lowest;
             threadVideoDisplay.Start();
 
             qAudioBufferToDisplay = new Queue<WaveInEventArgs>();
             threadAudioDisplay = new Thread(() => AudioDisplay());
+            threadAudioDisplay.Priority = ThreadPriority.Lowest;
             threadAudioDisplay.Start();
+
+            stopwatchSampleRate.Start();
         }
 
         public void InitializeRecorder(String recordDirectory, String siteID) {
@@ -108,7 +123,7 @@ namespace AzureKinectRecorder
             this.siteID = siteID;
             var fileName = siteID + "_" + DateTime.Now.ToString("yyyyMMddHHmm") + "_" + field.ToString();
             indOfNextChannelToWrite = 0;
-            bytesPerSample = audioCaptureDevice.WaveFormat.BitsPerSample / 8;
+            
             imageFullFileName = Path.Combine(recordDirectory, $"{fileName}.mkv");
             audioFileWriters = new List<WaveFileWriter>();
             audioBufferToRecord = new List<WaveInEventArgs>();
@@ -127,6 +142,16 @@ namespace AzureKinectRecorder
                 WaveFileWriter writer = new WaveFileWriter(audioFullFillName, wf);
                 audioFileWriters.Add(writer);
             }
+            flushTimer = new System.Timers.Timer(1000);
+            flushTimer.Elapsed += ShouldFlushCallBack;
+            flushTimer.AutoReset = true;
+            flushTimer.Enabled = true;
+        }
+
+        private void ShouldFlushCallBack(object sender, ElapsedEventArgs e)
+        {
+            shouldVideoFileFlush = true;
+            shouldAudioFileFlush = true;
         }
 
         //private void ReInitializeAudioWriter() {
@@ -160,18 +185,23 @@ namespace AzureKinectRecorder
         {
             while (true)
             {
-                if (qVideoBufferToRecord.Count > 0)
+                if (qVideoBufferToRecord.Count > 1) // being greater than 1 can leave one frame for displaying in the UI
                 {
                     mutVideoRecord.WaitOne();
                     var capture = qVideoBufferToRecord.Dequeue();
                     mutVideoRecord.ReleaseMutex();
 
                     cameraRecorder.WriteCapture(capture);
-                    cameraRecorder.Flush();
+                    capture.Dispose();
 
-                    mutVideoDisplay.WaitOne();
-                    qVideoBufferToDisplay.Enqueue(capture);
-                    mutVideoDisplay.ReleaseMutex();
+                    if (shouldVideoFileFlush) {
+                        shouldVideoFileFlush = false;
+                        cameraRecorder.Flush();
+                    }
+
+                    //mutVideoDisplay.WaitOne();
+                    //qVideoBufferToDisplay.Enqueue(capture);
+                    //mutVideoDisplay.ReleaseMutex();
                 }
                 else
                 {
@@ -206,6 +236,13 @@ namespace AzureKinectRecorder
                         audioFileWriters[indOfNextChannelToWrite].Write(curBuffer.Buffer, i * bytesPerSample, bytesPerSample);
                         indOfNextChannelToWrite++;
                         indOfNextChannelToWrite %= audioCaptureDevice.WaveFormat.Channels;
+                    }
+                    if (shouldAudioFileFlush) {
+                        shouldAudioFileFlush = false;
+                        foreach (var writer in audioFileWriters)
+                        {
+                            writer.Flush();
+                        }
                     }
                 }
                 else
@@ -257,6 +294,7 @@ namespace AzureKinectRecorder
                         if (threadVideoRecording == null)
                         {
                             threadVideoRecording = new Thread(() => VideoRecordingLoop());
+                            threadVideoRecording.Priority = ThreadPriority.BelowNormal;
                             threadVideoRecording.Start();
                         }
 
@@ -270,6 +308,9 @@ namespace AzureKinectRecorder
                         qVideoBufferToDisplay.Enqueue(capture);
                         mutVideoDisplay.ReleaseMutex();
                     }
+                }
+                else {
+                    Thread.Sleep(30);
                 }
 
                 if (sw.Elapsed > TimeSpan.FromSeconds(2))
@@ -287,7 +328,7 @@ namespace AzureKinectRecorder
 
         private void VideoDisplayLoop()
         {
-            while (true)
+            while (!isDisposing)
             {
                 if (qVideoBufferToDisplay.Count > 0)
                 {
@@ -297,20 +338,30 @@ namespace AzureKinectRecorder
                     }
                     var capture = qVideoBufferToDisplay.Dequeue();
                     mutVideoDisplay.ReleaseMutex();
+
                     var image = capture.ColorImage.CreateBitmap();
                     VideoDataAvailable?.Invoke(this, image);
+
                     capture.Dispose();
+                } else if (qVideoBufferToRecord.Count > 0) {
+                    System.Drawing.Image image = null;
+                    mutVideoRecord.WaitOne();
+                    if (qVideoBufferToRecord.Count > 0) {
+                        var capture = qVideoBufferToRecord.Last();
+                        image = capture.ColorImage.CreateBitmap();
+                    }
+                    mutVideoRecord.ReleaseMutex();
+                    if (image != null)
+                    {
+                        VideoDataAvailable?.Invoke(this, image);
+                    }
+                    else {
+                        Thread.Sleep(30);
+                    }
                 }
                 else
                 {
-                    if (!isDisposing)
-                    {
-                        Thread.Sleep(30);
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    Thread.Sleep(30);
                 }
             }
             mutVideoDisplay.Dispose();
@@ -366,6 +417,7 @@ namespace AzureKinectRecorder
                 if (threadAudioRecording == null)
                 {
                     threadAudioRecording = new Thread(() => AudioRecordingProcess());
+                    threadAudioRecording.Priority = ThreadPriority.BelowNormal;
                     threadAudioRecording.Start();
                 }
 
@@ -374,9 +426,19 @@ namespace AzureKinectRecorder
                 qAudioBufferToRecord.Enqueue(new WaveInEventArgs(buffer, e.BytesRecorded));
                 mutAudioFileProcess.ReleaseMutex();
             }
+            Byte[] buf = e.Buffer.ToArray();
             mutAudioDisplay.WaitOne();
-            qAudioBufferToDisplay.Enqueue(e);
+            qAudioBufferToDisplay.Enqueue(new WaveInEventArgs(buf, e.BytesRecorded));
             mutAudioDisplay.ReleaseMutex();
+
+            numberOfAudioSampleTemp += e.BytesRecorded / bytesPerSample / audioCaptureDevice.WaveFormat.Channels;
+
+            if (stopwatchSampleRate.Elapsed > TimeSpan.FromSeconds(2))
+            {
+                audioSampleRate = (double)numberOfAudioSampleTemp / stopwatchSampleRate.Elapsed.TotalSeconds;
+                numberOfAudioSampleTemp = 0;
+                stopwatchSampleRate.Restart();
+            }
         }
 
         public void StopRecord() {
@@ -389,6 +451,9 @@ namespace AzureKinectRecorder
             // flush data into hard disk
             cameraRecorder.Flush();
             cameraRecorder.Dispose();
+
+            flushTimer.Enabled = false;
+            flushTimer.Dispose();
         }
 
         //private void DisposeAudioWriters() {

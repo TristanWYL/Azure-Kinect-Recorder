@@ -126,13 +126,16 @@ namespace AzureKinectRecorder
                 //lbTest.Text = $"{max}";
                 if (max > 1) max = 1;
                 probarVolume.Value = (int)(100 * max);
+                lblSampleRate.Text = ((IntegratedRecorder)sender).audioSampleRate.ToString();
             }));
         }
 
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {            
+        {
             //Globals.getInstance().viewerRecorderPairs[this].audioCaptureDevice.DataAvailable -= OnAudioDataAvailable;
+            timer1.Enabled = false;
+            timer1.Dispose();
             Globals.getInstance().viewerRecorderPairs[this].Dispose();
             Globals.getInstance().viewerRecorderPairs.Remove(this);
             Globals.getInstance().dictIsFieldOpen[this.field] = false;
@@ -140,10 +143,12 @@ namespace AzureKinectRecorder
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            probarVolume.Value = (int)Math.Round(mic.AudioMeterInformation.MasterPeakValue * 100);
+            // probarVolume.Value = (int)Math.Round(mic.AudioMeterInformation.MasterPeakValue * 100);
             // Debug.WriteLine(mic.AudioMeterInformation.MasterPeakValue);
-            this.fpsProducedLabel.Text = $"{fpsProduced:F2}";
-            this.fpsRenderedLabel.Text = $"{fpsRender:F2}";
+            fpsProducedLabel.Text = $"{fpsProduced:F2}";
+            fpsRenderedLabel.Text = $"{fpsRender:F2}";
+            lblNumberOfAudioQueue.Text = Globals.getInstance().viewerRecorderPairs[this].qAudioBufferToRecord?.Count.ToString();
+            lblNumberOfVideoQueue.Text = Globals.getInstance().viewerRecorderPairs[this].qVideoBufferToRecord?.Count.ToString();
         }
 
         private void Viewer_FormClosing(object sender, FormClosingEventArgs e)
