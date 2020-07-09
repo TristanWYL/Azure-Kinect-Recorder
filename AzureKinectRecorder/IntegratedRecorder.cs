@@ -60,6 +60,7 @@ namespace AzureKinectRecorder
         private System.Timers.Timer flushTimer;
         private bool shouldVideoFileFlush = false;
         private bool shouldAudioFileFlush = false;
+        private Capture lastDisplayedFrame = null;
         
         /// <summary>
         /// 
@@ -348,7 +349,10 @@ namespace AzureKinectRecorder
                     mutVideoRecord.WaitOne();
                     if (qVideoBufferToRecord.Count > 0) {
                         var capture = qVideoBufferToRecord.Last();
-                        image = capture.ColorImage.CreateBitmap();
+                        if (lastDisplayedFrame != capture) {
+                            image = capture.ColorImage.CreateBitmap();
+                            lastDisplayedFrame = capture;
+                        }
                     }
                     mutVideoRecord.ReleaseMutex();
                     if (image != null)
