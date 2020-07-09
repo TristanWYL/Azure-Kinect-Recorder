@@ -126,7 +126,6 @@ namespace AzureKinectRecorder
                 //lbTest.Text = $"{max}";
                 if (max > 1) max = 1;
                 probarVolume.Value = (int)(100 * max);
-                lblSampleRate.Text = ((IntegratedRecorder)sender).audioSampleRate.ToString();
             }));
         }
 
@@ -149,6 +148,7 @@ namespace AzureKinectRecorder
             fpsRenderedLabel.Text = $"{fpsRender:F2}";
             lblNumberOfAudioQueue.Text = Globals.getInstance().viewerRecorderPairs[this].qAudioBufferToRecord?.Count.ToString();
             lblNumberOfVideoQueue.Text = Globals.getInstance().viewerRecorderPairs[this].qVideoBufferToRecord?.Count.ToString();
+            lblSampleRate.Text = ((int)(Globals.getInstance().viewerRecorderPairs[this].audioSampleRate)).ToString();
         }
 
         private void Viewer_FormClosing(object sender, FormClosingEventArgs e)

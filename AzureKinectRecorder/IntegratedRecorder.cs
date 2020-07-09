@@ -343,7 +343,7 @@ namespace AzureKinectRecorder
                     VideoDataAvailable?.Invoke(this, image);
 
                     capture.Dispose();
-                } else if (qVideoBufferToRecord.Count > 0) {
+                } else if (qVideoBufferToRecord?.Count > 0) {
                     System.Drawing.Image image = null;
                     mutVideoRecord.WaitOne();
                     if (qVideoBufferToRecord.Count > 0) {
