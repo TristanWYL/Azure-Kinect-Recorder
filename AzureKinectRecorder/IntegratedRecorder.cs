@@ -199,10 +199,6 @@ namespace AzureKinectRecorder
                         shouldVideoFileFlush = false;
                         cameraRecorder.Flush();
                     }
-
-                    //mutVideoDisplay.WaitOne();
-                    //qVideoBufferToDisplay.Enqueue(capture);
-                    //mutVideoDisplay.ReleaseMutex();
                 }
                 else
                 {
@@ -219,10 +215,15 @@ namespace AzureKinectRecorder
 
             while (qVideoBufferToRecord.Count > 0)
             {
+                mutVideoRecord.WaitOne();
                 var capture = qVideoBufferToRecord.Dequeue();
+                mutVideoRecord.ReleaseMutex();
                 cameraRecorder.WriteCapture(capture);
                 capture.Dispose();
             }
+
+            cameraRecorder.Flush();
+            cameraRecorder.Dispose();
         }
 
         private void AudioRecordingProcess() {
@@ -257,14 +258,26 @@ namespace AzureKinectRecorder
                     }
                 }
             }
+
+            while (qAudioBufferToRecord.Count > 0)
+            {
+                mutAudioFileProcess.WaitOne();
+                var curBuffer = qAudioBufferToRecord.Dequeue();
+                mutAudioFileProcess.ReleaseMutex();
+                for (int i = 0; i < curBuffer.BytesRecorded / bytesPerSample; i++)
+                {
+                    audioFileWriters[indOfNextChannelToWrite].Write(curBuffer.Buffer, i * bytesPerSample, bytesPerSample);
+                    indOfNextChannelToWrite++;
+                    indOfNextChannelToWrite %= audioCaptureDevice.WaveFormat.Channels;
+                }
+            }
+
             foreach (var writer in audioFileWriters)
             {
                 writer.Flush();
                 writer.Dispose();
             }
             audioFileWriters = null;
-            qAudioBufferToRecord.Clear();
-            qAudioBufferToRecord = null;
         }
 
         private void ImageExtractLoop()
@@ -331,25 +344,15 @@ namespace AzureKinectRecorder
         {
             while (!isDisposing)
             {
-                if (qVideoBufferToDisplay.Count > 0)
+                if (Globals.getInstance().isRecording)
                 {
-                    mutVideoDisplay.WaitOne();
-                    while (qVideoBufferToDisplay.Count > 1) {
-                        qVideoBufferToDisplay.Dequeue().Dispose();
-                    }
-                    var capture = qVideoBufferToDisplay.Dequeue();
-                    mutVideoDisplay.ReleaseMutex();
-
-                    var image = capture.ColorImage.CreateBitmap();
-                    VideoDataAvailable?.Invoke(this, image);
-
-                    capture.Dispose();
-                } else if (qVideoBufferToRecord?.Count > 0) {
                     System.Drawing.Image image = null;
                     mutVideoRecord.WaitOne();
-                    if (qVideoBufferToRecord.Count > 0) {
+                    if (qVideoBufferToRecord.Count > 0)
+                    {
                         var capture = qVideoBufferToRecord.Last();
-                        if (lastDisplayedFrame != capture) {
+                        if (lastDisplayedFrame != capture)
+                        {
                             image = capture.ColorImage.CreateBitmap();
                             lastDisplayedFrame = capture;
                         }
@@ -359,9 +362,25 @@ namespace AzureKinectRecorder
                     {
                         VideoDataAvailable?.Invoke(this, image);
                     }
-                    else {
+                    else
+                    {
                         Thread.Sleep(30);
                     }
+                }
+                else if (qVideoBufferToDisplay.Count > 0)
+                {
+                    mutVideoDisplay.WaitOne();
+                    while (qVideoBufferToDisplay.Count > 1)
+                    {
+                        qVideoBufferToDisplay.Dequeue().Dispose();
+                    }
+                    var capture = qVideoBufferToDisplay.Dequeue();
+                    mutVideoDisplay.ReleaseMutex();
+
+                    var image = capture.ColorImage.CreateBitmap();
+                    VideoDataAvailable?.Invoke(this, image);
+
+                    capture.Dispose();
                 }
                 else
                 {
@@ -449,9 +468,6 @@ namespace AzureKinectRecorder
 
             threadVideoRecording.Join();
             threadVideoRecording = null;
-            // flush data into hard disk
-            cameraRecorder.Flush();
-            cameraRecorder.Dispose();
 
             flushTimer.Enabled = false;
             flushTimer.Dispose();
