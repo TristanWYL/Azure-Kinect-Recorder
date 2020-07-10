@@ -436,6 +436,7 @@ namespace AzureKinectRecorder
                 //}
                 if (threadAudioRecording == null)
                 {
+                    Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
                     threadAudioRecording = new Thread(() => AudioRecordingProcess());
                     threadAudioRecording.Priority = ThreadPriority.BelowNormal;
                     threadAudioRecording.Start();
