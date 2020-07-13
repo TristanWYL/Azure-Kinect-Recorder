@@ -1,4 +1,5 @@
-﻿using K4AdotNet.Record;
+﻿using K4AdotNet;
+using K4AdotNet.Record;
 using K4AdotNet.Sensor;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
@@ -285,6 +286,8 @@ namespace AzureKinectRecorder
             Stopwatch sw = new Stopwatch();
             int frameCountProduced = 0;
             sw.Start();
+            // bool isFrist = true;
+            // TimeSpan initialDiff = new TimeSpan(0,0,0,0,0);
             while (true)
             {
                 Capture capture = null;
@@ -302,6 +305,18 @@ namespace AzureKinectRecorder
                 if (isSucceeded)
                 {
                     frameCountProduced++;
+
+                    //var deviceTime = capture.ColorImage.DeviceTimestamp.ToTimeSpan();
+                    //var systemTime = capture.ColorImage.SystemTimestamp.ToTimeSpan();
+                    //var diff = deviceTime - systemTime + initialDiff;
+
+                    //if (isFrist) {
+                    //    isFrist = false;
+                    //    initialDiff = -diff;
+                    //}
+
+                    // Debug.WriteLine("{0,12} \"deviceTime - systemTime\" {1,10}", field.ToString(), diff.TotalMilliseconds.ToString());
+                    capture.ColorImage.DeviceTimestamp = Microseconds64.FromMilliseconds(capture.ColorImage.SystemTimestamp.TotalMilliseconds);
 
                     if (Globals.getInstance().isRecording)
                     {
