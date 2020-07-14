@@ -102,8 +102,8 @@ namespace AzureKinectRecorder
         float maxSensitivity = 1.0f;
         float minSensitivity = 0.8f;
         float maxSensitivityTemp = (float)1.0;
-        float minSensitivityTemp = (float)0.8;
-        float maxAmplitude = (float)0.5; // refer to: https://manual.audacityteam.org/man/tutorial_making_a_test_recording.html
+        float minSensitivityTemp = (float)0.7;
+        float maxAmplitude = (float)0.3; // refer to: https://manual.audacityteam.org/man/tutorial_making_a_test_recording.html
         float sensitivityStep = (float)0.01;
         Mutex mu = new Mutex();
         List<float> sensitivitySeries;
