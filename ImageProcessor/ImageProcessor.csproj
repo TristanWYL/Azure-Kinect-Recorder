@@ -47,21 +47,30 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xabe.FFmpeg, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xabe.FFmpeg.3.5.2\lib\netstandard2.0\Xabe.FFmpeg.dll</HintPath>
+    <Reference Include="Xabe.FFmpeg, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xabe.FFmpeg.4.1.1\lib\netstandard2.0\Xabe.FFmpeg.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="ConvertProgress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ConvertProgress.Designer.cs">
+      <DependentUpon>ConvertProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MediaConverter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MediaConverter.Designer.cs">
+      <DependentUpon>MediaConverter.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ConvertProgress.resx">
+      <DependentUpon>ConvertProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MediaConverter.resx">
+      <DependentUpon>MediaConverter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
