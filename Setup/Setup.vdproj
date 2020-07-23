@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_020D7D1EA1A4F7FEEF9B478AAA3ABCEC"
+        "OwnerKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_09E90E2DDF3C439A9D9432DD9F309655"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,6 +57,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_276A5466662E42DBBF6BBF93D39AE823"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3189DC6CC7D94827F79F61C2E54DCCDD"
         "OwnerKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
         "MsmSig" = "8:_UNDEFINED"
@@ -75,6 +87,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_44BB794F367FB3EB7E28E372CA0F1EF8"
+        "OwnerKey" = "8:_77076D27090916259431021E8C010B49"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44BB794F367FB3EB7E28E372CA0F1EF8"
+        "OwnerKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6345C70DEC01EF440FCA124150AAD02C"
         "OwnerKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
         "MsmSig" = "8:_UNDEFINED"
@@ -83,6 +107,12 @@
         {
         "MsmKey" = "8:_6D5CE50225E44ECA8E89D00580D527BA"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_77076D27090916259431021E8C010B49"
+        "OwnerKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -112,12 +142,30 @@
         "Entry"
         {
         "MsmKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
+        "OwnerKey" = "8:_77076D27090916259431021E8C010B49"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
+        "OwnerKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A9FC02F7AC05AD7FD2E2CA1A2BDD1FC0"
         "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_AE147EA8786F4BE1AA3FD0F57A79B114"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -143,6 +191,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F4746872C28A4DC2A3D2601C800080E2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B8F5713C3C864D809C5B818BB6054F72"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -444,6 +498,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_276A5466662E42DBBF6BBF93D39AE823"
+            {
+            "SourcePath" = "8:..\\ImageProcessor\\convertor.ico"
+            "TargetName" = "8:convertor.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3189DC6CC7D94827F79F61C2E54DCCDD"
             {
             "AssemblyRegister" = "3:1"
@@ -595,6 +669,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77076D27090916259431021E8C010B49"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Xabe.FFmpeg, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_77076D27090916259431021E8C010B49"
+                    {
+                    "Name" = "8:Xabe.FFmpeg.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Xabe.FFmpeg.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_789E97CAB86C46C286EB719D526F962E"
@@ -848,15 +953,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AzureRecorder"
-        "ProductCode" = "8:{4E378D8E-39E3-42E4-8DFE-815F31DC2638}"
-        "PackageCode" = "8:{DE739B4B-FCD4-47F4-9529-AAEE039F1F8D}"
+        "ProductCode" = "8:{90C42CD9-B9A6-4345-A8B7-6C9DE4FEECAD}"
+        "PackageCode" = "8:{EA0ABAEC-2668-4873-9ECF-0F2F62AD3889}"
         "UpgradeCode" = "8:{9BA19B15-299F-4DF1-8BED-23340D7ED97C}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.1.0"
+        "ProductVersion" = "8:2.2.0"
         "Manufacturer" = "8:SEEM-CUHK"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -969,6 +1074,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_29B0E688F4A3466691B9F1880AA9568C"
+            {
+            "Name" = "8:Convertor"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B8F5713C3C864D809C5B818BB6054F72"
+            "Folder" = "8:_66306812892C460C8A9CC744A94F3F99"
+            "WorkingFolder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Icon" = "8:_276A5466662E42DBBF6BBF93D39AE823"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_556985C8BF2C4FA2A3513DEA5BB99AA5"
             {
             "Name" = "8:Azure Kinect Recorder"
@@ -995,6 +1114,20 @@
             "Folder" = "8:_66306812892C460C8A9CC744A94F3F99"
             "WorkingFolder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
             "Icon" = "8:_4243FCB6819949628690C3ACC9C8A251"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_81DCE8115F734A3BAFD4AF7B61655EE6"
+            {
+            "Name" = "8:Convertor"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B8F5713C3C864D809C5B818BB6054F72"
+            "Folder" = "8:_D1ADF41A259E40CEABE9C237664B0691"
+            "WorkingFolder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Icon" = "8:_276A5466662E42DBBF6BBF93D39AE823"
             "Feature" = "8:"
             }
         }
@@ -1396,9 +1529,37 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B8F5713C3C864D809C5B818BB6054F72"
+            {
+            "SourcePath" = "8:..\\ImageProcessor\\obj\\Debug\\ImageProcessor.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{1342F094-16CE-4FDB-9990-B16524368F79}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F4746872C28A4DC2A3D2601C800080E2"
             {
-            "SourcePath" = "8:..\\AzureKinectRecorder\\obj\\Release\\AzureKinectRecorder.exe"
+            "SourcePath" = "8:..\\AzureKinectRecorder\\obj\\Debug\\AzureKinectRecorder.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B362F0441C704D7BA6C1EFE4C8C08FBE"
