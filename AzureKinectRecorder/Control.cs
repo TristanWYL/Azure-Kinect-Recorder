@@ -238,7 +238,7 @@ namespace AzureKinectRecorder
             }
         }
 
-        private void btnRecord_Click(object sender, EventArgs e)
+        private async void btnRecord_Click(object sender, EventArgs e)
         {
             if (!Globals.getInstance().isRecording)
             {
@@ -290,10 +290,17 @@ namespace AzureKinectRecorder
             }
             else {
                 Globals.getInstance().isRecording = false;
+                List<Task> tasks = new List<Task>();
                 foreach (var viewerRecorderPair in Globals.getInstance().viewerRecorderPairs)
                 {
-                    viewerRecorderPair.Value.StopRecord();
+                    tasks.Add(Task.Run(() =>
+                    {
+                        viewerRecorderPair.Value.StopRecord();
+                    }));
                 }
+                Globals.getInstance().hasStoppedRecordingButFlushing = true;
+                await Task.WhenAll(tasks);
+                Globals.getInstance().hasStoppedRecordingButFlushing = false;
                 lblRecordingTime.ForeColor = Color.Gray;
                 btnRecord.Text = "Record";
                 btnPreview.Enabled = true;
@@ -302,6 +309,11 @@ namespace AzureKinectRecorder
 
         private void Control_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Globals.getInstance().hasStoppedRecordingButFlushing) {
+                MessageBox.Show("It is flushing data into the SSD, please try again after it is done. You can check out the number of remaining frames waiting to be written into the disk at the upper-left corner of the video-displaying windows.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true;
+                return;
+            }
             if (Globals.getInstance().isRecording)
             {
                 MessageBox.Show("Please stop recording first!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -337,12 +349,22 @@ namespace AzureKinectRecorder
                 btnTune.Enabled = false;
             }
             else {
-                if (isTuned) btnRecord.Enabled = true;
-                else btnRecord.Enabled = false;
-
-                if (Globals.getInstance().isRecording)
+                if (Globals.getInstance().hasStoppedRecordingButFlushing)
+                {
+                    btnRecord.Enabled = false;
                     btnTune.Enabled = false;
-                else btnTune.Enabled = true;
+                }
+                else {
+                    if (isTuned) btnRecord.Enabled = true;
+                    else btnRecord.Enabled = false;
+                    if (Globals.getInstance().isRecording)
+                    {
+                        btnTune.Enabled = false;
+                    }
+                    else {
+                        btnTune.Enabled = true;
+                    }
+                }
             }
 
             if (Globals.getInstance().isRecording)

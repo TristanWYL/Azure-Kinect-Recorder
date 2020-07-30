@@ -478,15 +478,14 @@ namespace AzureKinectRecorder
         }
 
         public void StopRecord() {
+            flushTimer.Enabled = false;
+            flushTimer.Dispose();
             //taskAudioRecording = null;
             threadAudioRecording.Join();
             threadAudioRecording = null;
 
             threadVideoRecording.Join();
             threadVideoRecording = null;
-
-            flushTimer.Enabled = false;
-            flushTimer.Dispose();
         }
 
         //private void DisposeAudioWriters() {

@@ -153,10 +153,17 @@ namespace AzureKinectRecorder
 
         private void Viewer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Globals.getInstance().hasStoppedRecordingButFlushing)
+            {
+                MessageBox.Show("It is flushing data into the SSD, please try again after it is done. You can check out the number of remaining frames waiting to be written into the disk at the upper-left corner of the video-displaying windows.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true;
+                return;
+            }
             if (Globals.getInstance().isRecording)
             {
                 MessageBox.Show("Please stop recording first!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
+                return;
             }
         }
     }
