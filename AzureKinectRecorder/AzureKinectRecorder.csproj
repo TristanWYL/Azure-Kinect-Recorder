@@ -79,6 +79,7 @@
     <Compile Include="Control.Designer.cs">
       <DependentUpon>Control.cs</DependentUpon>
     </Compile>
+    <Compile Include="DriveSpaceManager.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="ImageExtensions.cs" />
     <Compile Include="IntegratedRecorder.cs" />

@@ -25,9 +25,26 @@ namespace AzureKinectRecorder
         JArray jsonTestSite;
         String siteID = "";
         bool isTuned = false;
+        private int HzDriveSpaceCheck = 1;
+        private int TickNumInSpaceCheckPeriod;
         public Control()
         {
             InitializeComponent();
+            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS| EXECUTION_STATE.ES_SYSTEM_REQUIRED|EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+        }
+
+        // Prevent the minotor from shutting down
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+        [FlagsAttribute]
+        public enum EXECUTION_STATE : uint
+        {
+            ES_AWAYMODE_REQUIRED = 0x00000040,
+            ES_CONTINUOUS = 0x80000000,
+            ES_DISPLAY_REQUIRED = 0x00000002,
+            ES_SYSTEM_REQUIRED = 0x00000001
+            // Legacy flag, should not be used.
+            // ES_USER_PRESENT = 0x00000004
         }
 
         private void Control_Load(object sender, EventArgs e)
@@ -53,6 +70,7 @@ namespace AzureKinectRecorder
             }
 
             timer1.Enabled = true;
+            TickNumInSpaceCheckPeriod = HzDriveSpaceCheck * 1000 / timer1.Interval;
         }
 
         private void LoadJson() {
@@ -224,7 +242,21 @@ namespace AzureKinectRecorder
         {
             if (!Globals.getInstance().isRecording)
             {
-                if (siteID.Length < 1) {
+                DriveSpaceManager.GetInstance().NumOfkinect = Globals.getInstance().viewerRecorderPairs.Count;
+                if (DriveSpaceManager.GetInstance().ShouldStopRecording) {
+                    MessageBox.Show("Free disk space is too small. Please clean it first and then start recording again.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (DriveSpaceManager.GetInstance().ShouldWarnWhenRecording) {
+                    var result = MessageBox.Show("Free disk space is nearly used up. Are you sure you want to start recording now?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) { return; }
+                }else if (DriveSpaceManager.GetInstance().ShouldWarnBeforeRecording)
+                {
+                    var result = MessageBox.Show($"You can only record for around {DriveSpaceManager.GetInstance().GetMinutesByAvailabeSpace()} minutes due to limited free space in the disk drive. Are you sure you want to start recording now?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) { return; }
+                }
+
+               if (siteID.Length < 1) {
                     MessageBox.Show("Please specify the testing site before recording.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -284,6 +316,9 @@ namespace AzureKinectRecorder
             }
         }
 
+
+        private int TickCountForSpaceCheck = 0;
+        private bool HasPromptedLimitedFreeDisk = false;
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (Globals.getInstance().isRecording)
@@ -308,6 +343,29 @@ namespace AzureKinectRecorder
                 if (Globals.getInstance().isRecording)
                     btnTune.Enabled = false;
                 else btnTune.Enabled = true;
+            }
+
+            if (Globals.getInstance().isRecording)
+            {
+                lblRemainingDiskTime.Text = $"{ DriveSpaceManager.GetInstance().GetMinutesByAvailabeSpace() }";
+                TickCountForSpaceCheck++;
+                if (TickCountForSpaceCheck > TickNumInSpaceCheckPeriod)
+                {
+                    TickCountForSpaceCheck = 0;
+                    if (DriveSpaceManager.GetInstance().ShouldStopRecording)
+                    {
+                        btnRecord.PerformClick();
+                        MessageBox.Show("Free disk space is too small. The system has to stop recording automatically now. Please clean the disk first and then start recording again.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    if (DriveSpaceManager.GetInstance().ShouldWarnWhenRecording && !HasPromptedLimitedFreeDisk)
+                    {
+                        HasPromptedLimitedFreeDisk = true; 
+                        MessageBox.Show("Free disk space is nearly used up. You may need to stop recording shortly?", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            else {
+                HasPromptedLimitedFreeDisk = false;
             }
         }
 
@@ -341,6 +399,11 @@ namespace AzureKinectRecorder
                 Globals.getInstance().viewerRecorderPairs.ElementAt(i).Key.UpdateSensitivityLabel();
             }
             Globals.getInstance().tunerProcesses = null;
+        }
+
+        private void Control_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }
     }
 }
