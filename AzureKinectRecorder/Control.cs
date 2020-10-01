@@ -71,6 +71,7 @@ namespace AzureKinectRecorder
 
             timer1.Enabled = true;
             TickNumInSpaceCheckPeriod = HzDriveSpaceCheck * 1000 / timer1.Interval;
+            lblRemainingDiskTime.Text = $"{ DriveSpaceManager.GetInstance().GetMinutesByAvailabeSpace() }";
         }
 
         private void LoadJson() {
