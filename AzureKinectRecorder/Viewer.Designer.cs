@@ -54,8 +54,9 @@
             // 
             this.pictureBoxColor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxColor.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBoxColor.Name = "pictureBoxColor";
-            this.pictureBoxColor.Size = new System.Drawing.Size(1292, 722);
+            this.pictureBoxColor.Size = new System.Drawing.Size(861, 469);
             this.pictureBoxColor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxColor.TabIndex = 0;
             this.pictureBoxColor.TabStop = false;
@@ -74,11 +75,11 @@
             this.probarVolume,
             this.toolStripStatusLabel4,
             this.lblSensitivity});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 683);
-            this.statusStrip1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 430);
+            this.statusStrip1.Margin = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1292, 39);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(861, 39);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -86,7 +87,7 @@
             // 
             this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(109, 32);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(73, 34);
             this.toolStripStatusLabel2.Text = "Real FPS:";
             // 
             // fpsProducedLabel
@@ -100,7 +101,7 @@
             this.fpsProducedLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.fpsProducedLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.fpsProducedLabel.Name = "fpsProducedLabel";
-            this.fpsProducedLabel.Size = new System.Drawing.Size(60, 32);
+            this.fpsProducedLabel.Size = new System.Drawing.Size(60, 34);
             this.fpsProducedLabel.Text = "FPS";
             // 
             // toolStripStatusLabel5
@@ -108,7 +109,7 @@
             this.toolStripStatusLabel5.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolStripStatusLabel5.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
             this.toolStripStatusLabel5.Name = "toolStripStatusLabel5";
-            this.toolStripStatusLabel5.Size = new System.Drawing.Size(167, 32);
+            this.toolStripStatusLabel5.Size = new System.Drawing.Size(110, 32);
             this.toolStripStatusLabel5.Text = "Rendered FPS:";
             // 
             // fpsRenderedLabel
@@ -117,7 +118,7 @@
             this.fpsRenderedLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.fpsRenderedLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.fpsRenderedLabel.Name = "fpsRenderedLabel";
-            this.fpsRenderedLabel.Size = new System.Drawing.Size(60, 32);
+            this.fpsRenderedLabel.Size = new System.Drawing.Size(60, 34);
             this.fpsRenderedLabel.Text = "FPS";
             // 
             // toolStripStatusLabel7
@@ -125,7 +126,7 @@
             this.toolStripStatusLabel7.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolStripStatusLabel7.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
             this.toolStripStatusLabel7.Name = "toolStripStatusLabel7";
-            this.toolStripStatusLabel7.Size = new System.Drawing.Size(153, 32);
+            this.toolStripStatusLabel7.Size = new System.Drawing.Size(100, 32);
             this.toolStripStatusLabel7.Text = "Sample Rate:";
             // 
             // lblSampleRate
@@ -134,7 +135,7 @@
             this.lblSampleRate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.lblSampleRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSampleRate.Name = "lblSampleRate";
-            this.lblSampleRate.Size = new System.Drawing.Size(65, 32);
+            this.lblSampleRate.Size = new System.Drawing.Size(65, 34);
             this.lblSampleRate.Text = "Sample Rate";
             // 
             // toolStripStatusLabel1
@@ -142,14 +143,14 @@
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(101, 32);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(66, 32);
             this.toolStripStatusLabel1.Text = "Volume:";
             // 
             // probarVolume
             // 
             this.probarVolume.AutoSize = false;
             this.probarVolume.Name = "probarVolume";
-            this.probarVolume.Size = new System.Drawing.Size(150, 31);
+            this.probarVolume.Size = new System.Drawing.Size(100, 33);
             this.probarVolume.Step = 1;
             this.probarVolume.Value = 53;
             // 
@@ -158,14 +159,14 @@
             this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel4.Margin = new System.Windows.Forms.Padding(20, 4, 0, 3);
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(128, 32);
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(84, 32);
             this.toolStripStatusLabel4.Text = "Sensitivity:";
             // 
             // lblSensitivity
             // 
             this.lblSensitivity.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSensitivity.Name = "lblSensitivity";
-            this.lblSensitivity.Size = new System.Drawing.Size(46, 32);
+            this.lblSensitivity.Size = new System.Drawing.Size(31, 34);
             this.lblSensitivity.Text = "8.0";
             // 
             // timer1
@@ -176,9 +177,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.SeaGreen;
-            this.label1.Location = new System.Drawing.Point(0, 5);
+            this.label1.Location = new System.Drawing.Point(0, 3);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 20);
+            this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Audio Frames:";
             // 
@@ -186,9 +188,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.SeaGreen;
-            this.label2.Location = new System.Drawing.Point(0, 25);
+            this.label2.Location = new System.Drawing.Point(0, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(112, 20);
+            this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Video Frames:";
             // 
@@ -196,9 +199,10 @@
             // 
             this.lblNumberOfAudioQueue.AutoSize = true;
             this.lblNumberOfAudioQueue.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblNumberOfAudioQueue.Location = new System.Drawing.Point(110, 5);
+            this.lblNumberOfAudioQueue.Location = new System.Drawing.Point(73, 3);
+            this.lblNumberOfAudioQueue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNumberOfAudioQueue.Name = "lblNumberOfAudioQueue";
-            this.lblNumberOfAudioQueue.Size = new System.Drawing.Size(111, 20);
+            this.lblNumberOfAudioQueue.Size = new System.Drawing.Size(76, 13);
             this.lblNumberOfAudioQueue.TabIndex = 3;
             this.lblNumberOfAudioQueue.Text = "# AudioQueue";
             // 
@@ -206,28 +210,32 @@
             // 
             this.lblNumberOfVideoQueue.AutoSize = true;
             this.lblNumberOfVideoQueue.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblNumberOfVideoQueue.Location = new System.Drawing.Point(110, 25);
+            this.lblNumberOfVideoQueue.Location = new System.Drawing.Point(73, 16);
+            this.lblNumberOfVideoQueue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNumberOfVideoQueue.Name = "lblNumberOfVideoQueue";
-            this.lblNumberOfVideoQueue.Size = new System.Drawing.Size(111, 20);
+            this.lblNumberOfVideoQueue.Size = new System.Drawing.Size(76, 13);
             this.lblNumberOfVideoQueue.TabIndex = 4;
             this.lblNumberOfVideoQueue.Text = "# VideoQueue";
             // 
             // Viewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1292, 722);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(861, 469);
             this.Controls.Add(this.lblNumberOfVideoQueue);
             this.Controls.Add(this.lblNumberOfAudioQueue);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pictureBoxColor);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Viewer";
             this.Text = "Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Viewer_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Viewer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxColor)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

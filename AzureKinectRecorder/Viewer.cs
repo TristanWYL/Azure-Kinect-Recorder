@@ -166,5 +166,12 @@ namespace AzureKinectRecorder
                 return;
             }
         }
+
+        private void Viewer_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized) {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
     }
 }
