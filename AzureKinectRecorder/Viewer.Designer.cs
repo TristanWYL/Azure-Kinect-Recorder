@@ -54,7 +54,7 @@
             // 
             this.pictureBoxColor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBoxColor.Location = new System.Drawing.Point(0, 0);
-            this.pictureBoxColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBoxColor.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBoxColor.Name = "pictureBoxColor";
             this.pictureBoxColor.Size = new System.Drawing.Size(861, 469);
             this.pictureBoxColor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -229,7 +229,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pictureBoxColor);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Viewer";
             this.Text = "Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Viewer_FormClosing);
