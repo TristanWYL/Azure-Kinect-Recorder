@@ -1,42 +1,27 @@
 [
   {
-    "id": "OF_PWH_JCCOCC_RM316",
-    "desc": "PWH JCCOCC RM316",
-    "soundproof": false
-  },
-  {
-    "id": "OF_PWH_DIGEST",
-    "desc": "PWH DIGEST",
-    "soundproof": false
-  },
-  {
     "id": "OF_PWH_SEMINAR_RM124025",
     "desc": "PWH SEMINAR RM124025",
     "soundproof": false
   },
   {
-    "id": "SP_CU_PSY_RM339B1",
-    "desc": "CU PSY RM339 B1",
-    "soundproof": true
+    "id": "OF_PWH_8F",
+    "desc": "PWH 8F",
+    "soundproof": false
   },
   {
-    "id": "SP_CU_PSY_RM339B2",
-    "desc": "CU PSY RM339 B2",
-    "soundproof": true
+    "id": "OF_CU_AGEING_CENTRE",
+    "desc": "CU Ageing Centre",
+    "soundproof": false
   },
   {
-    "id": "SP_CU_PSY_RM339B3",
-    "desc": "CU PSY RM339 B3",
+    "id": "SP_SHEKMUN",
+    "desc": "Shek Mun",
     "soundproof": true
   },
   {
     "id": "SP_TST",
     "desc": "Tsim Sha Tsui",
-    "soundproof": true
-  },
-  {
-    "id": "SP_SHEKMUM",
-    "desc": "Shek Mum",
     "soundproof": true
   }
 ]
