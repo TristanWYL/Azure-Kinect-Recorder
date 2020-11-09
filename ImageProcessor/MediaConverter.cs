@@ -25,6 +25,7 @@ namespace ImageProcessor
 
             fileExtAccepted.Add("mkv");
             fileExtAccepted.Add("m4a");
+            fileExtAccepted.Add("caf");
             foreach (var ext in fileExtAccepted) {
                 ckblistTypes.Items.Add(ext);
             }
@@ -230,7 +231,12 @@ namespace ImageProcessor
                     }
                     else if (file.Value.EndsWith("m4a"))
                     {
-                        outputFileName = Path.ChangeExtension(file.Value, ".wav");
+                        outputFileName = file.Value + ".wav";
+                        // Refer to https://ffmpeg.xabe.net/docs.html
+                        argument = $"-i {file.Value} {outputFileName}";
+                    }
+                    else if (file.Value.EndsWith("caf")) {
+                        outputFileName = file.Value + ".wav";
                         // Refer to https://ffmpeg.xabe.net/docs.html
                         argument = $"-i {file.Value} {outputFileName}";
                     }
