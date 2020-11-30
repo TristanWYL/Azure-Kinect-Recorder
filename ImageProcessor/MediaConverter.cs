@@ -217,6 +217,7 @@ namespace ImageProcessor
         private async void ctxMenuBtnStartConverting_Click(object sender, EventArgs e)
         {
             IsConverting = true;
+            SetControlAvailabilityByConversionStatus(IsConverting);
             var dictCheckedFiles = GetCheckedFile();
             await Task.Run(() => {
                 Parallel.ForEach(dictCheckedFiles, (file) => {
@@ -238,7 +239,14 @@ namespace ImageProcessor
                     else if (file.Value.EndsWith("caf")) {
                         outputFileName = file.Value + ".wav";
                         // Refer to https://ffmpeg.xabe.net/docs.html
-                        argument = $"-i {file.Value} {outputFileName}";
+                        if (Properties.Settings.Default.DoAmplifyForCaf)
+                        {
+                            argument = $"-i {file.Value} -filter:a \"volume = 12dB\" {outputFileName}";
+                        }
+                        else
+                        {
+                            argument = $"-i {file.Value} {outputFileName}";
+                        }
                     }
                     else { return; }
                     if (File.Exists(outputFileName)) {
@@ -258,9 +266,15 @@ namespace ImageProcessor
             });
             MessageBox.Show("The conversion has finished!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
             IsConverting = false;
+            SetControlAvailabilityByConversionStatus(IsConverting);
         }
 
-        
+        private void SetControlAvailabilityByConversionStatus(bool isConverting) {
+            startConvertingToolStripMenuItem.Enabled = !isConverting;
+            ctxMenuBtnStartConverting.Enabled = !isConverting;
+            amplifyCafBy12dBToolStripMenuItem.Enabled = !isConverting;
+            amplifyCafBy12dBCxtMenuItem.Enabled = !isConverting;
+        }
 
         private void Conversion_Error(int ind, string errorMsg)
         {
@@ -306,6 +320,49 @@ namespace ImageProcessor
                 e.Cancel = true;
                 MessageBox.Show("The conversion is going on, so please close the window after it is done!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void openToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            openToolStripMenuItem_Click(sender, e);
+        }
+
+        private void startConvertingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ctxMenuBtnStartConverting_Click(sender, e);
+        }
+
+        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DoAmplifyForCaf = !Properties.Settings.Default.DoAmplifyForCaf;
+            Properties.Settings.Default.Save();
+            amplifyCafBy12dBToolStripMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+            amplifyCafBy12dBCxtMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+        }
+
+        private void MediaConverter_Load(object sender, EventArgs e)
+        {
+            amplifyCafBy12dBToolStripMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+            amplifyCafBy12dBCxtMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+        }
+
+        private void amplifyForcafBy12dBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DoAmplifyForCaf = !Properties.Settings.Default.DoAmplifyForCaf;
+            Properties.Settings.Default.Save();
+            amplifyCafBy12dBToolStripMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+            amplifyCafBy12dBCxtMenuItem.Checked = Properties.Settings.Default.DoAmplifyForCaf;
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var about = new About();
+            about.Show();
+        }
+
+        private void openToolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
+        {
+            startConvertingToolStripMenuItem.Enabled = GetNumberOfSelectedFile() > 0;
         }
     }
 

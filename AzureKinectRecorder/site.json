@@ -1,27 +1,34 @@
+//OF: office
+//SP: sound proof
 [
   {
-    "id": "OF_PWH_SEMINAR_RM124025",
-    "desc": "PWH SEMINAR RM124025",
-    "soundproof": false
-  },
-  {
     "id": "OF_PWH_8F",
-    "desc": "PWH 8F",
+    "desc": "PWH-8F",
     "soundproof": false
   },
   {
-    "id": "OF_CU_AGEING_CENTRE",
-    "desc": "CU Ageing Centre",
+    "id": "OF_PWH_10F",
+    "desc": "PWH-10F",
     "soundproof": false
   },
   {
-    "id": "SP_SHEKMUN",
-    "desc": "Shek Mun",
-    "soundproof": true
+    "id": "OF_SMO_CONSULTATION",
+    "desc": "SMO-Cons",
+    "soundproof": false
+  },
+  {
+    "id": "OF_SMO_CONFERENCE",
+    "desc": "SMO-Conf",
+    "soundproof": false
   },
   {
     "id": "SP_TST",
-    "desc": "Tsim Sha Tsui",
+    "desc": "TST-SP",
     "soundproof": true
+  },
+  {
+    "id": "OF_PEC",
+    "desc": "PEC",
+    "soundproof": false
   }
 ]

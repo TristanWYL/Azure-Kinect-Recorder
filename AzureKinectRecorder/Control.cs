@@ -290,6 +290,11 @@ namespace AzureKinectRecorder
                 TonePlayer.GetInstance().PlayBeep(2000, 500, WaveFormType.SquareWave, 32000);
             }
             else {
+                var result = MessageBox.Show("Sure to stop recording?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if(result == DialogResult.No)
+                {
+                    return;
+                }
                 Globals.getInstance().isRecording = false;
                 List<Task> tasks = new List<Task>();
                 foreach (var viewerRecorderPair in Globals.getInstance().viewerRecorderPairs)
