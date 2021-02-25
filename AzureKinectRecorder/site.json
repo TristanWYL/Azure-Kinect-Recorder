@@ -12,23 +12,33 @@
     "soundproof": false
   },
   {
-    "id": "OF_SMO_CONSULTATION",
-    "desc": "SMO-Cons",
-    "soundproof": false
-  },
-  {
     "id": "OF_SMO_CONFERENCE",
     "desc": "SMO-Conf",
     "soundproof": false
   },
   {
-    "id": "SP_TST",
-    "desc": "TST-SP",
+    "id": "OF_CPII_MEET",
+    "desc": "CPII-Meet",
+    "soundproof": false
+  },
+  {
+    "id": "SP_CPII",
+    "desc": "CPII-SP",
     "soundproof": true
   },
   {
-    "id": "OF_PEC",
-    "desc": "PEC",
+    "id": "OF_CDH_4F",
+    "desc": "CDH-4F",
     "soundproof": false
+  },
+  {
+    "id": "OF_BHC_GLASS",
+    "desc": "BHC-Glass",
+    "soundproof": false
+  },
+  {
+    "id": "SP_BHC",
+    "desc": "BHC-SP",
+    "soundproof": true
   }
 ]
